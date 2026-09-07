@@ -1,0 +1,5 @@
+system,carrier,n,eint_lo,eint_hi,regime,q2,dq_hero
+KRAS,"g-C$_3$N$_4$ (B,P-doped)",38,-39.89,-4.98,physisorption (doping-tuned),,0.15
+GBM,Ti$_3$C$_2$O$_2$ MXene,35,-15.508,-0.859,physisorption,0.09548295921564232,
+TNBC,B$_{36}$N$_{36}$ nanocage,33,-16.377,0.074,weak physisorption,,
+Tau,$\beta$-12 borophene,17,-232.53,-8.122,mixed: 12 chemisorb / 17 physisorb,0.06273456044900039,
