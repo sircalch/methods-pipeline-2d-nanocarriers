@@ -182,18 +182,20 @@ def generate_methods_manuscript():
         "nested cross-validated QSPR surrogate with Y-scrambling — and applied it, unchanged, to four unrelated "
         "disease systems: KRAS-G12D/pancreatic cancer on graphitic carbon nitride, glioblastoma on Ti3C2Tx "
         "MXene, triple-negative breast cancer on a B36N36 nanocage, and Alzheimer's Tau on β12 borophene. Under "
-        "this protocol, two of the four carriers — MXene and the B36N36 nanocage — show only modest, "
-        "non-predictive physisorption (Q²_CV ≤ 0.10), an honest but unglamorous result. A third, boron/"
-        "phosphorus-doped graphitic carbon nitride, shows comparably modest interaction energies but, unlike "
-        "the other three, a genuinely predictive descriptor-based QSPR of the adsorption energy "
-        "(Q²_CV = 0.51-0.58) — evidence that the leak-free protocol itself is not simply too conservative to "
-        "detect a real signal when one is present. The fourth, β12 borophene, breaks the physisorption pattern "
-        "altogether: it chemisorbs 12 of 29 Tau-directed ligands through a new covalent bond, a finding that "
-        "the field's common practice of a single, unrelaxed point calculation would have hidden entirely — our "
-        "own first pass at this system made exactly that mistake, reporting an inert-looking physisorption "
-        "energy for a chemically reactive surface. We use that mistake, corrected, as a worked example of what "
-        "a relaxed-geometry, leak-free screen changes, and distill the broader lesson into a short checklist "
-        "for computational drug-carrier screening."
+        "this protocol, one carrier, MXene, shows only modest, non-predictive physisorption (Q²_CV ≈ 0.10), an "
+        "honest but unglamorous result. Two others, the B36N36 nanocage and β12 borophene, turn out to be more "
+        "complex than a single physisorption picture suggests: each hides a small chemisorbing subpopulation "
+        "(5 of 33 TNBC-directed drugs; 12 of 29 Tau-directed drugs) behind a larger, non-predictive physisorbing "
+        "majority — a distinction the field's common practice of a single, unrelaxed point calculation would "
+        "have hidden entirely in both cases, and did, in our own first pass at the borophene system, which "
+        "reported an inert-looking physisorption energy for what is actually a chemically reactive surface for "
+        "a third of its ligands. The fourth carrier, boron/phosphorus-doped graphitic carbon nitride, is the "
+        "odd one out in the other direction: despite comparably modest interaction energies and no detected "
+        "chemisorption, its adsorption-energy QSPR is genuinely predictive (Q²_CV = 0.51-0.58) — evidence that "
+        "the leak-free protocol itself is not simply too conservative to detect a real signal when one is "
+        "present. We use the borophene case, corrected, as a worked example of what a relaxed-geometry, "
+        "leak-free screen changes, and distill the broader lesson into a short checklist for computational "
+        "drug-carrier screening."
     )
     p_kw = doc.add_paragraph()
     p_kw.paragraph_format.space_after = Pt(14)
@@ -340,24 +342,22 @@ def generate_methods_manuscript():
                 r.font.bold = True
                 r.font.size = Pt(9)
 
-    # NOTE: cross_system_summary.csv's "n" column is NOT a uniform "total complexes
-    # modelled" count across rows (e.g. Tau's CSV n=17 is only the physisorption-QSPR
-    # subset, not the 29 total drug-borophene complexes; TNBC's CSV n=33 is the
-    # pre-exclusion curated cohort, not the 30 actually modelled at GFN2-xTB level).
-    # Hardcode the verified "total complexes modelled" count per system instead of
-    # trusting that column literally, so Table 1's own caption promise holds.
-    N_MODELLED = {"KRAS": 33, "GBM": 35, "TNBC": 30, "Tau": 29}
+    # cross_system_summary.csv's "n" column is now consistently defined (fixed
+    # 2026-09-13 in gather_cross_system_summary.py) as the total number of
+    # complexes successfully modelled at the GFN2-xTB level for that system --
+    # trust it directly rather than hardcoding, so a future data refresh can't
+    # silently drift out of sync with this table again.
     table_rows = [
-        ("KRAS-G12D / PDAC", "g-C3N4 (B,P-doped)", N_MODELLED["KRAS"],
+        ("KRAS-G12D / PDAC", "g-C3N4 (B,P-doped)", rows["KRAS"]["n"],
          f"{float(rows['KRAS']['eint_lo']):.1f} … {float(rows['KRAS']['eint_hi']):.1f}",
          "physisorption, doping-tuned", "0.51–0.55 (per-carrier models)"),
-        ("Glioblastoma", "Ti3C2O2 MXene", N_MODELLED["GBM"],
+        ("Glioblastoma", "Ti3C2O2 MXene", rows["GBM"]["n"],
          f"{float(rows['GBM']['eint_lo']):.1f} … {float(rows['GBM']['eint_hi']):.1f}",
          "physisorption", f"{float(rows['GBM']['q2']):.2f}"),
-        ("Triple-negative breast", "B36N36 nanocage", N_MODELLED["TNBC"],
+        ("Triple-negative breast", "B36N36 nanocage", rows["TNBC"]["n"],
          f"{float(rows['TNBC']['eint_lo']):.1f} … {float(rows['TNBC']['eint_hi']):.1f}",
-         "weak physisorption", "≈0.00 (non-predictive)"),
-        ("Alzheimer's Tau", "β12 borophene", N_MODELLED["Tau"],
+         "mixed: 5 chemisorb / 25 physisorb", "≈0.00 (n=25 physisorbers)"),
+        ("Alzheimer's Tau", "β12 borophene", rows["Tau"]["n"],
          f"{float(rows['Tau']['eint_lo']):.1f} … {float(rows['Tau']['eint_hi']):.1f}",
          "mixed: 12 chemisorb / 17 physisorb", f"{float(rows['Tau']['q2']):.2f} (n=17 physisorbers)"),
     ]
@@ -378,16 +378,17 @@ def generate_methods_manuscript():
         "Cross-system summary of the four disease/carrier pairs screened with the identical pipeline. n is the "
         "number of drug-carrier complexes successfully modelled at the GFN2-xTB level for that system; "
         "Q²_CV values are pooled out-of-fold coefficients of determination from the leak-free nested surrogate "
-        "described in §2. Full per-system detail, docking statistics, and Y-scrambling controls are in each "
-        "system's own manuscript [22-25]."
+        "described in §2. Full per-system detail, docking statistics, and Y-scrambling controls are archived "
+        "with each system's own dataset and code [22-25]."
     ).font.size = Pt(9.5)
 
     add_image_if_exists(
         doc, os.path.join(FIG_DIR, "fig2_cross_system_energy_regimes.png"),
-        "Figure 2: Interaction-energy regimes across the four disease/carrier systems. Each panel shows the "
-        "real, per-complex GFN2-xTB single-point interaction energy distribution for one system; the y-axis "
-        "spans two orders of magnitude to accommodate borophene's chemisorption tail alongside the other three "
-        "systems' comparatively narrow physisorption bands."
+        "Figure 2: Interaction-energy regimes across the four disease/carrier systems. Each horizontal bar spans "
+        "the real, per-system minimum-to-maximum GFN2-xTB interaction energy across all successfully modelled "
+        "complexes (n labelled per system); the shaded band marks the covalent/chemisorption range. The x-axis "
+        "covers a wide span to accommodate the TNBC and Tau chemisorbing subpopulations alongside the narrower "
+        "physisorption-only bands of KRAS and MXene."
     )
     add_image_if_exists(
         doc, os.path.join(FIG_DIR, "fig3_drho_four_panels.png"),
@@ -397,31 +398,45 @@ def generate_methods_manuscript():
     )
 
     doc.add_paragraph(
-        "MXene and the B36N36 nanocage tell the more common story: for both, no bare, pristine carrier gives a "
-        "descriptor-based QSPR model of the adsorption energy that predicts meaningfully better than the "
-        "training-set mean (Q²_CV = 0.10 and ≈0.00, respectively). This is not a failure of the modelling: it "
-        "is the honest signal that, for a physisorption-dominated interaction with these four descriptors, the "
-        "adsorption energy is not well predicted by molecular weight, molar refractivity, and frontier-orbital "
-        "indices alone. Reporting a high Q² under these conditions would itself be a red flag for leakage. The "
-        "scientific value of the screen, in these two cases, is the mechanistic picture the pipeline still "
-        "delivers honestly — the interaction-energy regime and the charge-redistribution pattern — not a "
-        "predictive surrogate model."
+        "MXene is the cleanest case of the more common story: no bare, pristine carrier gives a descriptor-based "
+        "QSPR model of the adsorption energy that predicts meaningfully better than the training-set mean "
+        "(Q²_CV ≈ 0.10). This is not a failure of the modelling: it is the honest signal that, for a "
+        "physisorption-dominated interaction with these four descriptors, the adsorption energy is not well "
+        "predicted by molecular weight, molar refractivity, and frontier-orbital indices alone. Reporting a "
+        "high Q² under these conditions would itself be a red flag for leakage. The scientific value of the "
+        "screen, in this case, is the mechanistic picture the pipeline still delivers honestly — the "
+        "interaction-energy regime and the charge-redistribution pattern — not a predictive surrogate model."
     )
     doc.add_paragraph(
-        "KRAS-G12D on boron/phosphorus-doped g-C3N4 is the instructive exception. Its interaction energies sit "
-        "in the same modest, physisorption-dominated range as MXene and the nanocage (Table 1), yet the "
-        "identical StandardScaler + RidgeCV surrogate reaches Q²_CV = 0.51-0.58 across the pristine and doped "
-        "carriers — a genuinely predictive model by the same 1000-permutation Y-scrambling standard applied to "
-        "every other system here. We read this less as a claim that g-C3N4 is somehow special and more as a "
-        "control on the pipeline itself: the same leak-free nested cross-validation that returns Q²_CV ≈ 0 for "
-        "MXene and the nanocage is demonstrably capable of returning a high, permutation-validated Q² when the "
-        "underlying descriptor-property relationship actually supports one. A validation scheme that always "
-        "reports near-zero performance regardless of the input would be as suspect as one that always reports "
-        "an excellent fit."
+        "TNBC and Tau complicate this picture in the same qualitative way, at different scale. Neither carrier "
+        "is purely physisorptive once every complex is actually geometry-optimized and its closest contact "
+        "checked: 5 of the 33 TNBC-directed drugs (SN-38, epirubicin, topotecan, lapatinib, rucaparib) chemisorb "
+        "onto the B36N36 nanocage through a new covalent B-O or B-N bond (1.37-1.72 Å, ΔE_int,SP = -43 to "
+        "-186 kcal/mol), exactly the same qualitative pattern — a reactive minority hidden inside an otherwise "
+        "unremarkable physisorption-dominated cohort — that dominates the borophene/Tau system at larger scale "
+        "(12 of 29 ligands, §4). The descriptor-based QSPR remains non-predictive for the physisorbing majority "
+        "in both cases (TNBC: Q²_CV ≈ 0.00, n=25; Tau: Q²_CV = 0.06, n=17), so here too the chemisorption/"
+        "physisorption split itself, not a regression model, is the finding worth reporting. That the same "
+        "qualitative pattern shows up independently in two chemically unrelated carrier/ligand systems is, if "
+        "anything, a reason to check for it by default rather than to assume a screened 2D carrier is purely "
+        "physisorptive without verifying the relaxed contact distance."
     )
     doc.add_paragraph(
-        "The fourth system, β12 borophene against the Tau paired-helical-filament cohort, breaks the "
-        "physisorption pattern shared by the other three outright, and is the subject of the next section."
+        "KRAS-G12D on boron/phosphorus-doped g-C3N4 is the instructive exception in the other direction. Its "
+        "interaction energies sit in the same modest range as MXene, and we did not detect chemisorption for "
+        "this carrier, yet the identical StandardScaler + RidgeCV surrogate reaches Q²_CV = 0.51-0.58 across the "
+        "pristine and doped carriers — a genuinely predictive model by the same 1000-permutation Y-scrambling "
+        "standard applied to every other system here. We read this less as a claim that g-C3N4 is somehow "
+        "special and more as a control on the pipeline itself: the same leak-free nested cross-validation that "
+        "returns Q²_CV ≈ 0 for MXene and the TNBC/Tau physisorbing majorities is demonstrably capable of "
+        "returning a high, permutation-validated Q² when the underlying descriptor-property relationship "
+        "actually supports one. A validation scheme that always reports near-zero performance regardless of the "
+        "input would be as suspect as one that always reports an excellent fit."
+    )
+    doc.add_paragraph(
+        "Of the two chemisorbing systems, β12 borophene against the Tau paired-helical-filament cohort is the "
+        "more dramatic case (a larger reactive fraction, and the one we ourselves first got wrong), and is the "
+        "subject of the next section."
     )
 
     # ---- 4. The cautionary tale ----
@@ -529,15 +544,16 @@ def generate_methods_manuscript():
         "workstation — but only under three conditions: the adsorption geometry must be relaxed, not placed "
         "and left at a single point; the regression target must be a real computed or measured quantity, never "
         "an empirical formula dressed up as one; and the cross-validation must be leak-free, with all "
-        "preprocessing and hyperparameter selection confined to the training folds. Under those conditions, "
-        "the honest outcome is modest for three of our four disease systems — physisorption-dominated "
-        "interaction in the −10 to −40 kcal/mol range, non-predictive for two of the three (MXene, the B36N36 "
-        "nanocage) and genuinely predictive for the third (KRAS/g-C3N4, Q²_CV = 0.51-0.58), a useful internal "
-        "control showing that the near-zero results elsewhere are not simply an artefact of an overly "
-        "conservative validation scheme. For the fourth system, the same discipline reveals that the carrier is "
-        "chemically reactive enough to covalently modify a third of the "
-        "screened ligands, a result the field's common unrelaxed, single-point protocol would have hidden "
-        "entirely — as, for a time, ours did too. We offer the pipeline, the four case studies, and the "
+        "preprocessing and hyperparameter selection confined to the training folds. Under those conditions, the "
+        "honest outcome across our four disease systems is mixed in an informative way. MXene gives a modest, "
+        "non-predictive physisorption energy (Q²_CV ≈ 0.10) — the unglamorous majority case. KRAS/g-C3N4 gives "
+        "an equally modest interaction energy but a genuinely predictive QSPR (Q²_CV = 0.51-0.58), a useful "
+        "internal control showing the near-zero results elsewhere are not simply an artefact of an overly "
+        "conservative validation scheme. TNBC and Tau both turn out to hide a chemisorbing minority (5 of 33 "
+        "and 12 of 29 ligands, respectively) inside an otherwise non-predictive physisorbing majority — the "
+        "same qualitative pattern at two different scales, in two chemically unrelated systems, which the "
+        "field's common unrelaxed, single-point protocol would have hidden entirely in both cases, and did, for "
+        "a time, in ours. We offer the pipeline, the four case studies, and the "
         "corrected Tau result as a concrete, reproducible reference point for what changes when this discipline "
         "is applied, and as a short checklist for anyone building the next such screen."
     )
