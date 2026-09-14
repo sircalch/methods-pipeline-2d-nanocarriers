@@ -1,0 +1,19 @@
+open C:/Users/Andre/Proyectos doctorado/nano-qsar-ai-papers/methods-pipeline-2d-nanocarriers/figures/fig4_assets/old_carrier.pdb
+open C:/Users/Andre/Proyectos doctorado/nano-qsar-ai-papers/methods-pipeline-2d-nanocarriers/figures/fig4_assets/old_drug.pdb
+style #1 stick
+size #1 stickRadius 0.06
+color #1 #9a6a10
+surface #1
+color #1 #e8a628
+transparency #1 45
+style #2 stick
+size #2 stickRadius 0.24
+color #2 byelement
+set bgColor white
+lighting soft
+graphics quality 3
+view #1 #2
+turn y 25
+turn x 10
+save C:/Users/Andre/Proyectos doctorado/nano-qsar-ai-papers/methods-pipeline-2d-nanocarriers/figures/fig4_assets/old_complex.png width 2200 height 1900 supersample 4 transparentBackground true
+exit

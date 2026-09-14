@@ -311,8 +311,11 @@ def generate_methods_manuscript():
         r_num = p.add_run(f"{i}. {item[0]} ")
         r_num.font.bold = True
         p.add_run(item[1])
-    add_pending_figure_note(doc, "Figure 1", "pipeline schematic (structures → adsorption → "
-                             "docking → descriptors → nested-CV surrogate → applicability domain).")
+    add_image_if_exists(
+        doc, os.path.join(FIG_DIR, "fig1_pipeline_schematic.png"),
+        "Figure 1: The nine-step reproducible screening pipeline described in this section, applied "
+        "identically to all four disease/carrier systems."
+    )
 
     # ---- 3. Four case studies ----
     add_heading_styled(doc, "3. Four Case Studies", level=1)
@@ -386,8 +389,12 @@ def generate_methods_manuscript():
         "spans two orders of magnitude to accommodate borophene's chemisorption tail alongside the other three "
         "systems' comparatively narrow physisorption bands."
     )
-    add_pending_figure_note(doc, "Figure 3", "the four charge-density-difference (Δρ) isosurface panels, one "
-                             "per system's strongest-adsorbing complex, side by side on a common isovalue scale.")
+    add_image_if_exists(
+        doc, os.path.join(FIG_DIR, "fig3_drho_four_panels.png"),
+        "Figure 3: Charge-density difference (Δρ = ρ_complex − ρ_carrier − ρ_drug) at the "
+        "strongest-adsorbing complex per system, real GFN2-xTB densities in every panel. Yellow/blue "
+        "lobes mark electron accumulation/depletion on complex formation."
+    )
 
     doc.add_paragraph(
         "MXene and the B36N36 nanocage tell the more common story: for both, no bare, pristine carrier gives a "
@@ -449,9 +456,13 @@ def generate_methods_manuscript():
         "modification of a nucleophile-bearing therapeutic on the carrier surface is not a reversible loading "
         "event."
     )
-    add_pending_figure_note(doc, "Figure 4", "the Tau/borophene before/after comparison — the original "
-                             "unrelaxed drug placement (5-6 Å from the sheet) beside the relaxed, "
-                             "chemisorbed pose, with the two ΔE_int,SP distributions plotted side by side.")
+    add_image_if_exists(
+        doc, os.path.join(FIG_DIR, "fig4_tau_before_after.png"),
+        "Figure 4: The Tau/borophene before/after comparison for curcumin, the strongest-adsorbing ligand. "
+        "(a) The original unrelaxed placement, drug 5-6 Å from the sheet. (b) The corrected, relaxed, "
+        "chemisorbed pose (1.41 Å B-C contact). (c) The real 29-compound ΔE_int,SP distribution before "
+        "versus after — not simulated data."
+    )
     doc.add_paragraph(
         "We state the lessons from this case as four explicit rules, offered not as an indictment of any prior "
         "work but as a checklist we now apply to every new system before trusting a single number from it:"
