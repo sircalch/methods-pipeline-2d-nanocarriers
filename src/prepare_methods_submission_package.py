@@ -122,9 +122,9 @@ def build_submission_bundle():
     print(f"\n=======================================================")
     print(f">>> METHODS PAPER DRAFT PACKAGE GENERATED ({os.path.getsize(zip_path)} bytes) <<<")
     print(f" -> {zip_path}")
-    print(f" NOTE: this is a DRAFT package -- all 4 figures are now built and embedded,")
-    print(f" but this has NOT been reviewed the way the other 4 papers' final")
-    print(f" submission packages were. Do not submit without a full review pass.")
+    print(f" NOTE: all 4 figures built and embedded; full data/logic-consistency review")
+    print(f" AND a prose-quality review both done (2026-09-13). Believed submission-ready")
+    print(f" pending the user's own final read.")
     print(f"=======================================================")
 
 
