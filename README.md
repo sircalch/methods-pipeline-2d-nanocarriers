@@ -66,3 +66,6 @@ their inputs.
 Manuscript complete and reviewed (data/logic consistency pass + a separate
 prose-quality pass). Believed submission-ready pending the corresponding
 author's final read. Not yet submitted.
+
+Figures + cross-system dataset archived on Zenodo:
+[10.5281/zenodo.22760388](https://doi.org/10.5281/zenodo.22760388).
