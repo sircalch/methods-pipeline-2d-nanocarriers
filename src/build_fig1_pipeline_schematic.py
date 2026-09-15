@@ -4,13 +4,16 @@ build_fig1_pipeline_schematic.py
 Figure 1: the nine-step pipeline schematic described in Section 2 of the
 manuscript. Purely conceptual/illustrative (boxes and arrows) -- no
 simulated or fabricated data is drawn as if it were a result.
+
+Layout: a true boustrophedon (snake) flow, 3 rows x 3 columns. Steps are
+grouped into three conceptual phases, each with its own colour, so the
+reader sees both the local step-by-step order and the larger structure of
+the pipeline at a glance.
 """
 import os
 import sys
 import matplotlib.pyplot as plt
 from matplotlib.patches import FancyBboxPatch, FancyArrowPatch
-from matplotlib.path import Path
-import matplotlib.patches as mpatches
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import _pubstyle
@@ -18,67 +21,75 @@ import _pubstyle
 _pubstyle.apply()
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+# Three conceptual phases, one colour each (Okabe-Ito, colour-blind safe).
+PHASE_A = _pubstyle.ACCENT  # quantum-chemical setup
+PHASE_B = _pubstyle.GOOD    # structure- and interaction-derived analysis
+PHASE_C = _pubstyle.WARN    # surrogate modelling & validation
+
 STEPS = [
-    ("1. Structures", "SMILES → RDKit + MMFF\nGFN2-xTB optimize\n(drug & carrier)", _pubstyle.ACCENT),
-    ("2. Adsorption\ngeometry", "Place 3.2 Å above LOCAL\nsurface, 4 orientations,\noptimize every complex", _pubstyle.ACCENT),
-    ("3. Interaction\nenergies", "ΔE_int,SP (frozen) &\nΔE_ads (relaxed);\ncontact <1.9 Å = chemisorb", _pubstyle.WARN),
-    ("4. Δρ map", "GFN2-xTB densities\n(Multiwfn) → isosurface\n(ChimeraX)", _pubstyle.GOOD),
-    ("5. Docking", "AutoDock Vina vs. disease\ntarget; pose-recovery\nchecked by redocking", _pubstyle.ACCENT),
-    ("6. Descriptors", "Conceptual-DFT indices\n(η, S, χ, μ, ω)\nfrom the same xtb output", _pubstyle.GOOD),
-    ("7. Surrogate\nmodel", "StandardScaler+RidgeCV\ninside nested 5×5 CV;\n1000× Y-scrambling", _pubstyle.WARN),
-    ("8. Applicability\ndomain", "OECD Principle 3;\nWilliams hat-matrix\nleverage", _pubstyle.MUTED),
-    ("9. Reproducibility", "run_entire_<system>\n_study.py; code + data\non GitHub & Zenodo", _pubstyle.INK),
+    ("1. Structures", "SMILES → RDKit + MMFF\nGFN2-xTB optimize\n(drug & carrier)", PHASE_A),
+    ("2. Adsorption\ngeometry", "Place 3.2 Å above LOCAL\nsurface, 4 orientations,\noptimize every complex", PHASE_A),
+    ("3. Interaction\nenergies", "ΔE_int,SP (frozen) &\nΔE_ads (relaxed);\ncontact <1.9 Å = chemisorb", PHASE_A),
+    ("4. Δρ map", "GFN2-xTB densities\n(Multiwfn) → isosurface\n(ChimeraX)", PHASE_B),
+    ("5. Docking", "AutoDock Vina vs. disease\ntarget; pose-recovery\nchecked by redocking", PHASE_B),
+    ("6. Descriptors", "Conceptual-DFT indices\n(η, S, χ, μ, ω)\nfrom the same xtb output", PHASE_B),
+    ("7. Surrogate\nmodel", "StandardScaler+RidgeCV\ninside nested 5×5 CV;\n1000× Y-scrambling", PHASE_C),
+    ("8. Applicability\ndomain", "OECD Principle 3;\nWilliams hat-matrix\nleverage", PHASE_C),
+    ("9. Reproducibility", "run_entire_<system>\n_study.py; code + data\non GitHub & Zenodo", PHASE_C),
+]
+
+PHASE_LABELS = [
+    (0, "Quantum-chemical setup"),
+    (3, "Structure & interaction analysis"),
+    (6, "Surrogate modelling & validation"),
 ]
 
 
 def rounded_box(ax, xy, w, h, title, body, color):
     box = FancyBboxPatch(
-        xy, w, h, boxstyle="round,pad=0.02,rounding_size=0.06",
-        linewidth=1.4, edgecolor=color, facecolor="white", zorder=2,
+        xy, w, h, boxstyle="round,pad=0.02,rounding_size=0.07",
+        linewidth=1.8, edgecolor=color, facecolor="white", zorder=3,
     )
     ax.add_patch(box)
-    cx, cy = xy[0] + w / 2, xy[1] + h / 2
-    ax.text(cx, xy[1] + h - 0.10, title, ha="center", va="top",
-            fontsize=8.6, fontweight="bold", color=color, zorder=3)
-    ax.text(cx, xy[1] + h * 0.42, body, ha="center", va="center",
-            fontsize=7.0, color=_pubstyle.INK, zorder=3, linespacing=1.4)
+    # subtle tinted header strip so each box reads as one card, not floating text
+    header_h = h * 0.30
+    header = FancyBboxPatch(
+        (xy[0], xy[1] + h - header_h), w, header_h,
+        boxstyle="round,pad=0.02,rounding_size=0.07",
+        linewidth=0, facecolor=color, alpha=0.12, zorder=2,
+    )
+    ax.add_patch(header)
+    cx = xy[0] + w / 2
+    ax.text(cx, xy[1] + h - header_h / 2, title, ha="center", va="center",
+            fontsize=9.2, fontweight="bold", color=color, zorder=4)
+    ax.text(cx, xy[1] + (h - header_h) / 2, body, ha="center", va="center",
+            fontsize=7.4, color=_pubstyle.INK, zorder=4, linespacing=1.5)
 
 
 def main():
-    ncols = 3
-    nrows = 3
-    fig, ax = plt.subplots(figsize=(8.0, 6.6))
+    ncols, nrows = 3, 3
+    fig, ax = plt.subplots(figsize=(9.0, 7.4))
     ax.set_xlim(0, ncols)
-    ax.set_ylim(0, nrows)
+    ax.set_ylim(-0.05, nrows + 0.28)
     ax.axis("off")
+    ax.set_aspect("equal")
 
-    box_w, box_h = 0.92, 0.86
-    gap_x, gap_y = 0.08, 0.10
+    box_w, box_h = 0.90, 0.82
+    gap_x, gap_y = 0.10, 0.30
 
+    # True boustrophedon layout: even rows go L->R, odd rows go R->L, so
+    # column position always matches the step's place in the reading order.
     positions = []
     for row in range(nrows):
-        for col in range(ncols):
-            x = col * (box_w + gap_x) + 0.04
-            y = (nrows - 1 - row) * (box_h + gap_y) + 0.08
+        row_reversed = (row % 2 == 1)
+        col_order = range(ncols - 1, -1, -1) if row_reversed else range(ncols)
+        for col in col_order:
+            x = col * (box_w + gap_x) + 0.05
+            y = (nrows - 1 - row) * (box_h + gap_y) + 0.10
             positions.append((x, y))
 
     for (title, body, color), (x, y) in zip(STEPS, positions):
         rounded_box(ax, (x, y), box_w, box_h, title, body, color)
-
-    # Arrows: snake path 1->2->3 (row0 L-to-R), 3->4 (down), 4->5->6 (row1 R-to-L), 6->7 (down), 7->8->9 (row2 L-to-R)
-    def arrow(p_from, p_to):
-        a = FancyArrowPatch(p_from, p_to, arrowstyle="-|>", mutation_scale=16,
-                             linewidth=1.6, color=_pubstyle.MUTED, zorder=1,
-                             connectionstyle="arc3,rad=0.0")
-        ax.add_patch(a)
-
-    def elbow_arrow(p0, mid_y, p2):
-        """Manual two-segment down-then-across connector, arrowhead only at the end."""
-        ax.plot([p0[0], p0[0]], [p0[1], mid_y], color=_pubstyle.MUTED, linewidth=1.6, zorder=1, solid_capstyle="round")
-        ax.plot([p0[0], p2[0]], [mid_y, mid_y], color=_pubstyle.MUTED, linewidth=1.6, zorder=1, solid_capstyle="round")
-        a = FancyArrowPatch((p2[0], mid_y), p2, arrowstyle="-|>", mutation_scale=16,
-                             linewidth=1.6, color=_pubstyle.MUTED, zorder=1)
-        ax.add_patch(a)
 
     cx = [p[0] + box_w / 2 for p in positions]
     cy = [p[1] + box_h / 2 for p in positions]
@@ -87,25 +98,42 @@ def main():
     top = [p[1] + box_h for p in positions]
     bottom = [p[1] for p in positions]
 
-    # row 0: 0->1->2
-    arrow((right[0], cy[0]), (left[1], cy[1]))
-    arrow((right[1], cy[1]), (left[2], cy[2]))
-    # down 2->3 (elbow: drop from box 3's right edge, then left into box 4's top)
-    mid_y_1 = (bottom[2] + top[3]) / 2
-    elbow_arrow((right[2] + gap_x / 2, bottom[2]), mid_y_1, (cx[3], top[3]))
-    # row 1 (indices 3,4,5) right-to-left: 3->4->5
-    arrow((left[3], cy[3]), (right[4], cy[4]))
-    arrow((left[4], cy[4]), (right[5], cy[5]))
-    # down 5->6 (elbow: drop from box 6's right edge, then left into box 7's top)
-    mid_y_2 = (bottom[5] + top[6]) / 2
-    elbow_arrow((right[5] + gap_x / 2, bottom[5]), mid_y_2, (cx[6], top[6]))
-    # row 2: 6->7->8
-    arrow((right[6], cy[6]), (left[7], cy[7]))
-    arrow((right[7], cy[7]), (left[8], cy[8]))
+    def straight_arrow(p_from, p_to, color=_pubstyle.MUTED):
+        a = FancyArrowPatch(p_from, p_to, arrowstyle="-|>", mutation_scale=18,
+                             linewidth=1.8, color=color, zorder=1,
+                             shrinkA=2, shrinkB=2)
+        ax.add_patch(a)
+
+    def down_arrow(i_from, i_to, color=_pubstyle.MUTED):
+        """Vertical connector between the last box of one row and the
+        first box of the next (both already aligned on the same column
+        thanks to the boustrophedon layout)."""
+        straight_arrow((cx[i_from], bottom[i_from] - 0.02), (cx[i_to], top[i_to] + 0.02), color)
+
+    # Row 0 (indices 0,1,2): 1 -> 2 -> 3, left to right
+    straight_arrow((right[0], cy[0]), (left[1], cy[1]), PHASE_A)
+    straight_arrow((right[1], cy[1]), (left[2], cy[2]), PHASE_A)
+    down_arrow(2, 3, PHASE_B)
+    # Row 1 (indices 3,4,5): 4 -> 5 -> 6, right to left (box order already reversed)
+    straight_arrow((left[3], cy[3]), (right[4], cy[4]), PHASE_B)
+    straight_arrow((left[4], cy[4]), (right[5], cy[5]), PHASE_B)
+    down_arrow(5, 6, PHASE_C)
+    # Row 2 (indices 6,7,8): 7 -> 8 -> 9, left to right
+    straight_arrow((right[6], cy[6]), (left[7], cy[7]), PHASE_C)
+    straight_arrow((right[7], cy[7]), (left[8], cy[8]), PHASE_C)
+
+    # Phase group labels, centred over the first row occupied by each phase.
+    row_of = {0: 0, 3: 1, 6: 2}
+    for start_idx, label in PHASE_LABELS:
+        row = row_of[start_idx]
+        y = (nrows - 1 - row) * (box_h + gap_y) + 0.10 + box_h + 0.075
+        color = STEPS[start_idx][2]
+        ax.text(ncols / 2, y, label, ha="center", va="bottom",
+                fontsize=9.5, fontweight="bold", color=color, style="italic")
 
     fig.suptitle("The nine-step reproducible screening pipeline (§2)",
-                  fontsize=11.5, fontweight="bold", color=_pubstyle.INK, y=0.99)
-    fig.tight_layout(rect=[0, 0, 1, 0.95])
+                  fontsize=13, fontweight="bold", color=_pubstyle.INK, y=0.995)
+    fig.tight_layout(rect=[0, 0, 1, 0.94])
 
     out_path = os.path.join(BASE, "figures", "fig1_pipeline_schematic.png")
     _pubstyle.save(fig, out_path, also_pdf=True)
