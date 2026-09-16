@@ -192,7 +192,7 @@ def generate_methods_manuscript():
         "of its ligands. The fourth carrier, boron/phosphorus-doped graphitic carbon nitride, is the exception "
         "in the opposite sense: instead of a hidden chemisorption story, it is a hidden predictive-model story. "
         "Despite comparably modest interaction energies and no detected chemisorption, its adsorption-energy "
-        "QSPR is genuinely predictive (Q²_CV = 0.51-0.58) — evidence that the leak-free protocol itself is not "
+        "QSPR is genuinely predictive (Q²_CV = 0.51-0.55) — evidence that the leak-free protocol itself is not "
         "simply too conservative to detect a real signal when one is present. We use the borophene case, "
         "corrected, as a worked example of what a relaxed-geometry, leak-free screen changes, and distill the "
         "broader lesson into a short checklist for computational drug-carrier screening."
@@ -277,7 +277,7 @@ def generate_methods_manuscript():
          "electronic interaction; ΔE_ads, with both fragments relaxed to their isolated-molecule minima, "
          "additionally captures the conformational strain paid on binding. A closest contact below 1.9 Å "
          "is classified as chemisorption (a new covalent bond has formed); anything looser is physisorption."),
-        ("Charge-density difference.", "For the strongest-adsorbing complex in each system, GFN2-xTB electron "
+        ("Charge-density difference.", "For a representative complex in each system, GFN2-xTB electron "
          "densities of the complex, the isolated carrier, and the isolated drug are evaluated on one shared "
          "grid (Multiwfn [15]) and combined into Δρ = ρ(complex) − ρ(carrier) − "
          "ρ(drug); the resulting isosurface is rendered in ChimeraX [16] to visualize the electronic "
@@ -392,8 +392,9 @@ def generate_methods_manuscript():
     )
     add_image_if_exists(
         doc, os.path.join(FIG_DIR, "fig3_drho_four_panels.png"),
-        "Figure 3: Charge-density difference (Δρ = ρ_complex − ρ_carrier − ρ_drug) at the "
-        "strongest-adsorbing complex per system, real GFN2-xTB densities in every panel. Yellow/blue "
+        "Figure 3: Charge-density difference (Δρ = ρ_complex − ρ_carrier − ρ_drug) for one representative "
+        "adsorption complex per system — the same complex highlighted in each case study's own "
+        "charge-density analysis, real GFN2-xTB densities in every panel. Yellow/blue "
         "lobes mark electron accumulation/depletion on complex formation."
     )
 
@@ -425,7 +426,7 @@ def generate_methods_manuscript():
         "KRAS-G12D on boron/phosphorus-doped g-C3N4 is the instructive exception, in the opposite sense from "
         "TNBC and Tau: instead of a hidden chemisorption story, it is a hidden predictive-model story. Its "
         "interaction energies sit in the same modest range as MXene, and we did not detect chemisorption for "
-        "this carrier, yet the identical StandardScaler + RidgeCV surrogate reaches Q²_CV = 0.51-0.58 across the "
+        "this carrier, yet the identical StandardScaler + RidgeCV surrogate reaches Q²_CV = 0.51-0.55 across the "
         "pristine and doped carriers — a genuinely predictive model by the same 1000-permutation Y-scrambling "
         "standard applied to every other system here. We read this less as a claim that g-C3N4 is somehow "
         "special and more as a control on the pipeline itself: the same leak-free nested cross-validation that "
@@ -548,7 +549,7 @@ def generate_methods_manuscript():
         "preprocessing and hyperparameter selection confined to the training folds. Under those conditions, the "
         "honest outcome across our four disease systems is mixed in an informative way. MXene gives a modest, "
         "non-predictive physisorption energy (Q²_CV ≈ 0.10) — the unglamorous majority case. KRAS/g-C3N4 gives "
-        "an equally modest interaction energy but a genuinely predictive QSPR (Q²_CV = 0.51-0.58), a useful "
+        "an equally modest interaction energy but a genuinely predictive QSPR (Q²_CV = 0.51-0.55), a useful "
         "internal control showing the near-zero results elsewhere are not simply an artefact of an overly "
         "conservative validation scheme. TNBC and Tau both turn out to hide a chemisorbing minority (5 of 33 "
         "and 12 of 29 ligands, respectively) inside an otherwise non-predictive physisorbing majority — the "
@@ -565,9 +566,10 @@ def generate_methods_manuscript():
         "This Perspective synthesizes results already deposited for each of the four underlying case studies; "
         "no new primary computation is reported here. Each system's complete code, curated dataset, GFN2-xTB "
         "and AutoDock Vina outputs, and figure/manuscript generators are archived at its own public GitHub "
-        "repository and Zenodo deposit [22-25]; this paper's own cross-system summary table and Figure 2 "
-        "generator are archived alongside the manuscript source in the methods-pipeline-2d-nanocarriers "
-        "repository."
+        "repository and Zenodo deposit [22-25]; this paper's own cross-system summary table, figures, and "
+        "manuscript generators are archived alongside the manuscript source in the methods-pipeline-2d-nanocarriers "
+        "GitHub repository, with a versioned snapshot of the figures and dataset additionally deposited on "
+        "Zenodo at DOI 10.5281/zenodo.22760388."
     )
 
     # ---- Back matter (Beilstein order) ----

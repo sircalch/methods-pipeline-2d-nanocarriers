@@ -79,7 +79,8 @@ def create_cover_letter(sub_dir):
     doc.add_paragraph(
         "Every quantitative claim in the manuscript is drawn from the four underlying case studies, each "
         "independently archived with open code and data at its own Zenodo deposit (DOIs 10.5281/zenodo.22187819, "
-        "22187857, 22187834, and 22187873)."
+        "22187857, 22187834, and 22187873). This paper's own cross-system figures and dataset are additionally "
+        "archived at their own Zenodo deposit, DOI 10.5281/zenodo.22760388."
     )
     doc.add_paragraph(
         "All authors have approved the manuscript and confirm no competing interests."

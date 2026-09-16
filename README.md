@@ -25,7 +25,7 @@ informative, mixed picture:
 
 - **MXene (GBM)** — modest, honestly non-predictive physisorption (Q²_CV ≈ 0.10).
 - **KRAS-G12D / g-C3N4** — comparably modest interaction energies, but a
-  genuinely predictive QSPR (Q²_CV = 0.51–0.58): a control showing the
+  genuinely predictive QSPR (Q²_CV = 0.51–0.55): a control showing the
   leak-free protocol isn't simply too conservative to find real signal.
 - **TNBC / B36N36 and Tau / β12 borophene** — both hide a small chemisorbing
   minority (5 of 33; 12 of 29 ligands) inside an otherwise non-predictive

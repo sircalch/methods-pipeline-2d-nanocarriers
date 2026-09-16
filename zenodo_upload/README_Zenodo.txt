@@ -4,14 +4,14 @@ Studies, and a Cautionary Tale
 =============================================================================
 
 This record holds the 4 manuscript figures and the cross-system summary
-dataset for the Perspective article above, submitted to the Beilstein Journal
-of Nanotechnology.
+dataset for the Perspective article above, prepared for submission to the
+Beilstein Journal of Nanotechnology.
 
 The complete, fully reproducible pipeline (figure generators, cross-repo data
 aggregation script, and the manuscript generator itself) is archived on
 GitHub at the matching release:
 
-  https://github.com/sircalch/methods-pipeline-2d-nanocarriers/releases/tag/v1.0.0
+  https://github.com/sircalch/methods-pipeline-2d-nanocarriers/releases/tag/v1.0.1
 
 Files in this record
 ---------------------
@@ -20,7 +20,8 @@ Files in this record
 - Figure_2_Cross_System_Energy_Regimes.png -- interaction-energy regimes
   across the four disease/carrier systems (real, per-system GFN2-xTB data).
 - Figure_3_Delta_rho_Four_Panels.png -- real charge-density-difference
-  renders, one per system's strongest-adsorbing complex.
+  renders, one representative complex per system (the same complex
+  highlighted in each case study's own charge-density analysis).
 - Figure_4_Tau_Before_After.png -- the Tau/borophene cautionary tale: the
   original unrelaxed drug placement vs. the corrected relaxed chemisorbed
   pose, plus the real 29-compound before/after energy distribution.

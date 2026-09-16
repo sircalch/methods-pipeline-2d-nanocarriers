@@ -2,10 +2,12 @@
 build_fig3_drho_panels.py
 ===========================
 Figure 3: the four real charge-density-difference (Delta_rho) isosurface
-renders, one per system's strongest-adsorbing complex, composed into a single
-2x2 panel figure with the shared _pubstyle house look. Each render is the
-REAL GFN2-xTB-density image already built and used in that system's own
-manuscript -- nothing here is re-rendered or fabricated, only composed.
+renders, one per system's representative complex (the same complex highlighted
+in that system's own charge-density analysis -- not necessarily the strongest
+binder identified for that system), composed into a single 2x2 panel figure
+with the shared _pubstyle house look. Each render is the REAL GFN2-xTB-density
+image already built and used in that system's own manuscript -- nothing here
+is re-rendered or fabricated, only composed.
 """
 import os
 import sys
@@ -54,8 +56,8 @@ def main():
         _pubstyle.panel_label(ax, letter, dx=0.02, dy=1.0, size=12)
 
     fig.suptitle(
-        "Charge-density difference (Δρ = ρ_complex − ρ_carrier − ρ_drug) at the strongest-adsorbing "
-        "complex per system",
+        "Charge-density difference (Δρ = ρ_complex − ρ_carrier − ρ_drug) for one representative "
+        "complex per system, analyzed in each case study's own manuscript",
         fontsize=10.5, y=1.00
     )
     fig.tight_layout(rect=[0, 0, 1, 0.97])
