@@ -43,37 +43,132 @@ def letters(fig, axs, dy=0.02):
 
 
 # ------------------------------------------------------------------ Fig. 1
+REN = FIG / "_renders"
+
+
+def audit_findings():
+    """Name of each check and its result in the audit, from the evidence file."""
+    idt, rc, me, q = EV["identity"], EV["reconstruction"]["tau_old"], EV["method"], EV["qspr"]
+    nbad = sum(1 for c in EV["carriers"] if c["model"] == "before" and c["forbidden_bonds"] != "none")
+    fail = [s for s in STUDIES if any(c["rmsd_A"] > 2.0 for c in EV["docking"][s])]
+    img = EV["periodic"]["image_distance_A"]
+    worst = min(img, key=img.get)
+    v1, v2 = q["KRAS_v1_reproduced"]["Q2_CV"], q["KRAS:dE_int"]["Q2_CV"]
+    return {1: ("InChIKey\nvs PubChem", f"{idt['total']['wrong']} of {idt['total']['n']} wrong"),
+            2: ("bond census,\nstoichiometry", f"{nbad} of 4 invalid"),
+            3: ("E(carrier) ≥\nits minimum", f"{rc['n_below_min']} of {rc['n']} below"),
+            4: ("test on the\nbare carrier", f"xTB: {me['gfn2_min_a']:.2f} vs {me['a_ref']:.2f} Å"),
+            5: ("redock, RMSD\nof every mode", f"{len(fail)} of 4 targets fail"),
+            6: ("row → structure\n+ output file", f"{EV['fabricated']['n_rows']} unbacked rows"),
+            7: ("drug–image\ndistance", f"{worst.lower()} {img[worst]:.2f} Å"),
+            8: ("fit only after\nchecks 1–7", f"$Q^2_{{CV}}$ {v1:.2f} → {v2:.2f}".replace("-", "−"))}
+
+
+def _thumb_table(ax):
+    """Schematic result table: every row must point to a structure and an output file."""
+    from matplotlib.patches import Rectangle
+    ax.set_xlim(0, 10); ax.set_ylim(0, 8); ax.set_axis_off(); ax.set_aspect("equal")
+    ax.add_patch(Rectangle((0.5, 0.5), 9, 7, fc="white", ec=S.INK, lw=0.6))
+    ax.add_patch(Rectangle((0.5, 6.3), 9, 1.2, fc=S.FAINT, ec=S.INK, lw=0.6))
+    for y in (1.65, 2.8, 3.95, 5.1):
+        ax.plot([0.5, 9.5], [y + 1.15, y + 1.15], color=S.FAINT, lw=0.5)
+    for x in (3.5, 6.5):
+        ax.plot([x, x], [0.5, 7.5], color=S.FAINT, lw=0.5)
+    for k, y in enumerate((5.65, 4.5, 3.35, 2.2, 1.05)):
+        ax.text(2.0, y, ["mol_01", "mol_02", "mol_03", "mol_04", "…"][k], fontsize=4.2, ha="center",
+                va="center", color=S.INK)
+        ax.text(5.0, y, "✓" if k < 3 else "?", fontsize=5, ha="center", va="center",
+                color=S.ADS if k < 3 else S.CHEM, fontweight="bold", fontfamily="DejaVu Sans")
+        ax.text(8.0, y, "✓" if k < 2 else "?", fontsize=5, ha="center", va="center",
+                color=S.ADS if k < 2 else S.CHEM, fontweight="bold", fontfamily="DejaVu Sans")
+    for x, t in ((2.0, "row"), (5.0, "struct."), (8.0, "output")):
+        ax.text(x, 6.9, t, fontsize=4.2, ha="center", va="center", fontweight="bold", color=S.INK)
+
+
+def _thumb_parity(ax):
+    o = pd.read_csv(P / "kras-pancreatic-gC3N4-ai" / "results" / "qspr" / "dEint_pristine_oof.csv")
+    y = o.filter(regex="^(y|obs|dE|delta)", axis=1).iloc[:, 0] if "y" not in o else o["y"]
+    yh = o.filter(regex="pred", axis=1).iloc[:, 0]
+    lo, hi = min(y.min(), yh.min()), max(y.max(), yh.max())
+    ax.plot([lo, hi], [lo, hi], color=S.MUTED, lw=0.6, ls=(0, (3, 2)))
+    ax.scatter(y, yh, s=5, color=S.DOCK, edgecolor="white", lw=0.2)
+    ax.set_xticks([]); ax.set_yticks([])
+    ax.set_xlabel("computed", fontsize=4.8, labelpad=1); ax.set_ylabel("predicted", fontsize=4.8, labelpad=1)
+    for sp in ("top", "right"):
+        ax.spines[sp].set_visible(False)
+    ax.set_aspect("equal", adjustable="datalim")
+
+
 def fig1():
-    """Screening workflow and where each of the eight checks applies."""
+    """Screening workflow, the eight checks and what each one found in the audit.
+    Laid out in inches so that circles stay round and text fits its box."""
+    import matplotlib.image as mpimg
     from matplotlib.patches import FancyBboxPatch
-    stages = [("Drug\nstructures", [1]), ("Carrier\nmodel", [2]), ("Method\n(xTB / DFT)", [4]),
-              ("Adsorption\ncomplexes", [3, 7]), ("Docking", [5]), ("Result\ntables", [6]), ("QSPR\nmodel", [8])]
-    checks = {1: "InChIKey vs\nPubChem", 2: "bond census,\nstoichiometry", 3: "carrier energy\n≥ its minimum",
-              4: "test on the\nbare carrier", 5: "redock, every\nmode", 6: "row → input\n+ output file",
-              7: "drug–image\ndistance", 8: "only after\nchecks 1–7"}
-    fig = plt.figure(figsize=(S.DOUBLE, 48 * S.MM))
+    stages = [("Drug structures", [1], REN / "mrtx1133_2d.png"),
+              ("Carrier model", [2], REN / "cage_B36N36.png"),
+              ("Method", [4], REN / "slab_side.png"),
+              ("Adsorption", [3, 7], REN / "mrtx_pristine_side.png"),
+              ("Docking", [5], REN / "kras_pocket.png"),
+              ("Result tables", [6], "table"),
+              ("QSPR model", [8], "parity")]
+    fnd = audit_findings()
+    W = S.DOUBLE
+    n, pad, gap = len(stages), 0.03, 0.075
+    w = (W - 2 * pad - gap * (n - 1)) / n                     # card width (in)
+    title_h, img_h, link_h, chip_h, chip_gap = 0.2, 0.78, 0.13, 0.46, 0.05
+    card_h = title_h + img_h
+    H = 0.03 + card_h + link_h + 2 * chip_h + chip_gap + 0.03
+    fig = plt.figure(figsize=(W, H))
     ax = fig.add_axes([0, 0, 1, 1])
-    ax.set_xlim(0, 100)
-    ax.set_ylim(8, 50)
-    ax.set_axis_off()
-    n = len(stages)
-    w, gap = 10.8, (100 - 5 - n * 10.8) / (n - 1)      # margins keep the rounded boxes inside 177.8 mm
-    for i, (name, ck) in enumerate(stages):
-        x = 2.5 + i * (w + gap)
-        ax.add_patch(FancyBboxPatch((x, 30), w, 12, boxstyle="round,pad=0.3,rounding_size=1.2",
-                                    fc=S.PANEL_BG, ec=S.INK, lw=0.8))
-        ax.text(x + w / 2, 36, name, ha="center", va="center", fontsize=7, fontweight="bold")
+    ax.set_xlim(0, W); ax.set_ylim(0, H); ax.set_axis_off()
+
+    def inset(x, y, wi, hi):
+        return fig.add_axes([x / W, y / H, wi / W, hi / H])
+
+    ctop = H - 0.03
+    cbot = ctop - card_h
+    for i, (title, cks, img) in enumerate(stages):
+        x = pad + i * (w + gap)
+        ax.add_patch(FancyBboxPatch((x, cbot), w, card_h, boxstyle="round,pad=0,rounding_size=0.05",
+                                    fc="white", ec="#c3cad4", lw=0.7))
+        ax.add_patch(FancyBboxPatch((x, ctop - title_h), w, title_h, boxstyle="round,pad=0,rounding_size=0.05",
+                                    fc="#eef1f5", ec="#c3cad4", lw=0.7))
+        ax.text(x + w / 2, ctop - title_h / 2, title, ha="center", va="center", fontsize=6.6,
+                fontweight="bold", color=S.INK)
+        bx, by, bw, bh = x + 0.04, cbot + 0.04, w - 0.08, img_h - 0.08
+        if img == "table":
+            _thumb_table(inset(bx + 0.02, by + 0.06, bw - 0.04, bh - 0.12))
+        elif img == "parity":
+            _thumb_parity(inset(bx + 0.17, by + 0.14, bw - 0.21, bh - 0.16))
+        else:
+            im = mpimg.imread(img)
+            ar = im.shape[1] / im.shape[0]
+            iw, ih = (bw, bw / ar) if bw / ar <= bh else (bh * ar, bh)
+            iax = inset(bx + (bw - iw) / 2, by + (bh - ih) / 2, iw, ih)
+            iax.imshow(im, interpolation="lanczos"); iax.set_axis_off()
         if i < n - 1:
-            ax.annotate("", xy=(x + w + gap - 0.3, 36), xytext=(x + w + 0.5, 36),
-                        arrowprops=dict(arrowstyle="-|>", color=S.MUTED, lw=0.8))
-        for j, num in enumerate(ck):
-            cx = x + w / 2 + (j - (len(ck) - 1) / 2) * 9.5
-            ax.plot([cx, cx], [29.5, 22.5], color=BEFORE, lw=0.7)
-            ax.scatter(cx, 20.5, s=150, color=BEFORE, zorder=3)
-            ax.text(cx, 20.5, str(num), ha="center", va="center", color="white", fontsize=7, fontweight="bold",
-                    zorder=4)
-            ax.text(cx, 16.5, checks[num], ha="center", va="top", fontsize=5.8, color=S.INK, linespacing=1.15)
-    ax.text(2.5, 47, "Screening workflow", fontsize=7, color=S.MUTED)
+            yA = cbot + img_h / 2
+            ax.annotate("", xy=(x + w + gap - 0.008, yA), xytext=(x + w + 0.008, yA),
+                        arrowprops=dict(arrowstyle="-|>", color=S.MUTED, lw=0.8, mutation_scale=6))
+        for j, num in enumerate(cks):
+            y1 = cbot - link_h - j * (chip_h + chip_gap)
+            y0 = y1 - chip_h
+            ax.plot([x + w / 2, x + w / 2], [y1 + (link_h if j == 0 else chip_gap), y1], color=BEFORE, lw=0.7)
+            ax.add_patch(FancyBboxPatch((x, y0), w, chip_h, boxstyle="round,pad=0,rounding_size=0.04",
+                                        fc="#fdf2f3", ec=BEFORE, lw=0.6))
+            ax.scatter([x + 0.1], [y1 - 0.11], s=62, color=BEFORE, zorder=3, linewidths=0)
+            ax.text(x + 0.1, y1 - 0.112, str(num), ha="center", va="center", color="white", fontsize=6.2,
+                    fontweight="bold", zorder=4)
+            name, found = fnd[num]
+            ax.text(x + 0.19, y1 - 0.11, name, ha="left", va="center", fontsize=5.6, color=S.INK,
+                    linespacing=1.12)
+            ax.text(x + w / 2, y0 + 0.095, found, ha="center", va="center", fontsize=5.9, color=BEFORE,
+                    fontweight="bold")
+    xr = pad + 4 * (w + gap)
+    ax.text(xr, cbot - link_h - chip_h - chip_gap - 0.08,
+            "Red: what each check found in the audit of the four case studies\n"
+            "(1, 2, 5: all four studies; 3: tau; 4, 7: MXene; 6, 8: KRAS)",
+            ha="left", va="top", fontsize=5.6, color=S.MUTED, linespacing=1.3)
     S.save(fig, FIG, "Fig1")
 
 

@@ -24,9 +24,13 @@ def audit_methods(doc, ev, c):
            "Eight checks were applied, each at the step of the workflow that it protects (Figure 1). They are "
            "described below in the order of the failure modes they address.", indent=True)
     k.figure(doc, BASE_FIG / "Fig1.png", 1,
-             "Workflow of a computational carrier screen and the eight checks of the audit, each attached to "
-             "the step it protects; the numbers correspond to the failure modes in the Results and to the "
-             "checklist in Table 2")
+             "Workflow of a computational carrier screen and the eight checks of the audit. Each check is "
+             "attached to the step it protects, and its number corresponds to the failure mode in the Results "
+             "and to the checklist in Table 2; the red line gives what the check found in the audit "
+             "of the four studies. Images, from the rebuilt studies: MRTX1133; the B_{36}N_{36} cage; the "
+             "Ti_{3}C_{2}O_{2} MXene; MRTX1133 adsorbed on g-C_{3}N_{4} (GFN2-xTB); MRTX1133 docked in KRAS-G12D; "
+             "a result table in which every row must point to an input structure and an output file; and "
+             "out-of-fold predictions of the QSPR model of the KRAS interaction energy")
     k.para(doc,
            "*Compound identity.* The SMILES string of every drug was compared with the PubChem" + c("kim2021") +
            " record retrieved by name, through the InChIKey. A structure was counted as wrong when its "
