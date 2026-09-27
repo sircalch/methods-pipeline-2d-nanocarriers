@@ -57,9 +57,9 @@ def fig1():
     ax.set_ylim(8, 50)
     ax.set_axis_off()
     n = len(stages)
-    w, gap = 11.2, (100 - 2 - n * 11.2) / (n - 1)
+    w, gap = 10.8, (100 - 5 - n * 10.8) / (n - 1)      # margins keep the rounded boxes inside 177.8 mm
     for i, (name, ck) in enumerate(stages):
-        x = 1 + i * (w + gap)
+        x = 2.5 + i * (w + gap)
         ax.add_patch(FancyBboxPatch((x, 30), w, 12, boxstyle="round,pad=0.3,rounding_size=1.2",
                                     fc=S.PANEL_BG, ec=S.INK, lw=0.8))
         ax.text(x + w / 2, 36, name, ha="center", va="center", fontsize=7, fontweight="bold")
@@ -73,7 +73,7 @@ def fig1():
             ax.text(cx, 20.5, str(num), ha="center", va="center", color="white", fontsize=7, fontweight="bold",
                     zorder=4)
             ax.text(cx, 16.5, checks[num], ha="center", va="top", fontsize=5.8, color=S.INK, linespacing=1.15)
-    ax.text(1, 47, "Screening workflow", fontsize=7, color=S.MUTED)
+    ax.text(2.5, 47, "Screening workflow", fontsize=7, color=S.MUTED)
     S.save(fig, FIG, "Fig1")
 
 
@@ -307,7 +307,47 @@ def fig6():
     S.save(fig, FIG, "Fig6")
 
 
-FIGS = {"1": fig1, "2": fig2, "3": fig3, "4": fig4, "5": fig5, "6": fig6}
+def toc():
+    """Table-of-contents graphic, exactly 3.25 × 1.75 in (ACS requirement)."""
+    idt, rc, me, q = EV["identity"], EV["reconstruction"]["tau_old"], EV["method"], EV["qspr"]
+    nbad = sum(1 for c in EV["carriers"] if c["model"] == "before" and c["forbidden_bonds"] != "none")
+    fig = plt.figure(figsize=(3.25, 1.75))
+    fig.text(0.03, 0.93, "Rebuilding four carrier screens from raw inputs", fontsize=7.2, weight="bold",
+             color=S.INK, va="top")
+    items = [(f"{idt['total']['wrong']}/{idt['total']['n']}", "drug structures were\nanother compound"),
+             (f"{nbad}/4", "carrier models had\nimpossible bonds"),
+             (f"{rc['chem_old']}→{rc['chem_new']}", "'chemisorbers' once the\ncarrier stopped collapsing"),
+             (f"{me['gfn2_min_a']:.2f} Å", "xTB lattice of the MXene\n(reference 3.03 Å)")]
+    for i, (big, small) in enumerate(items):
+        y = 0.75 - i * 0.19
+        fig.text(0.03, y, big, fontsize=8.5, weight="bold", color=S.CHEM, va="top")
+        fig.text(0.215, y + 0.005, small, fontsize=5.4, color=S.INK, va="top", linespacing=1.05)
+    ax = fig.add_axes([0.66, 0.2, 0.31, 0.56])
+    v = [q["KRAS_v1_reproduced"]["Q2_CV"], q["KRAS:dE_int"]["Q2_CV"]]
+    ax.bar([0, 1], v, color=[S.CHEM, S.ADS], width=0.62)
+    ax.axhline(0, color=S.INK, lw=0.6)
+    for x, val, p in zip([0, 1], v, [q["KRAS_v1_reproduced"]["p_perm"], q["KRAS:dE_int"]["p_perm"]]):
+        ax.text(x, val + (0.05 if val > 0 else -0.05), f"{val:.2f}".replace("-", "−"), ha="center",
+                va="bottom" if val > 0 else "top", fontsize=6, weight="bold")
+    ax.set_xticks([0, 1])
+    ax.set_xticklabels(["invalid\ncarrier", "valid\ncarrier"], fontsize=5.4)
+    ax.set_ylim(-0.55, 0.8)
+    ax.set_yticks([-0.5, 0, 0.5])
+    ax.tick_params(labelsize=5.2, length=2)
+    ax.set_title("QSPR $Q^2_{CV}$, leak-free", fontsize=5.8, loc="center", weight="normal", pad=3)
+    for sp in ("top", "right"):
+        ax.spines[sp].set_visible(False)
+    fig.text(0.5, 0.02, "8 failure modes · 8 checks that cost less than the calculation", fontsize=5.6,
+             ha="center", color=S.MUTED)
+    FIG.mkdir(exist_ok=True)
+    for ext, kw in (("pdf", {}), ("png", {"dpi": 600}), ("tif", {"dpi": 600,
+                                                                 "pil_kwargs": {"compression": "tiff_lzw"}})):
+        with plt.rc_context({"savefig.bbox": "standard"}):       # keep the exact page size
+            fig.savefig(FIG / f"TOC.{ext}", **kw)
+    plt.close(fig)
+
+
+FIGS = {"1": fig1, "2": fig2, "3": fig3, "4": fig4, "5": fig5, "6": fig6, "toc": toc}
 
 if __name__ == "__main__":
     S.apply()

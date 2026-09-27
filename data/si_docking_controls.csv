@@ -1,0 +1,13 @@
+study,receptor,control,rmsd_top_A
+KRAS,,"self-redock, crystal conformation",0.514
+KRAS,,"production protocol, from SMILES",1.247
+TNBC,,"self-redock, crystal conformation",0.507
+TNBC,,"production protocol, from SMILES",1.267
+Tau,,"ligand-free fibril: self-redock, crystal conformation",6.731
+Tau,,"ligand-free fibril: production protocol, from SMILES",6.282
+Tau,,"tracer stack present: self-redock, crystal conformation",0.713
+Tau,,"tracer stack present: production protocol, from SMILES",2.814
+GBM,,"self-redock, crystal conformation",5.938
+GBM,,"production protocol, from SMILES",7.614
+GBM (before rebuild),,"self-redock, crystal conformation",8.613
+GBM (before rebuild),,"production protocol, from SMILES",5.376

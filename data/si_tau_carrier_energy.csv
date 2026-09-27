@@ -1,0 +1,29 @@
+name,dEcar_old_kcal,adsorption_mode_old,dEcar_new_kcal,adsorption_mode_new
+Methylene Blue,-34.2,chemisorption,6.8,physisorption
+Hydromethylthionine,-48.2,physisorption,5.3,physisorption
+Azure A,6.2,chemisorption,4.5,physisorption
+Toluidine Blue O,15.5,chemisorption,5.0,physisorption
+Thioflavin-T,-36.9,chemisorption,4.9,physisorption
+FDDNP,-49.4,chemisorption,3.8,physisorption
+Curcumin,-34.5,chemisorption,5.3,physisorption
+Resveratrol,14.5,chemisorption,5.1,physisorption
+EGCG,-46.5,chemisorption,5.3,physisorption
+Quercetin,32.1,chemisorption,3.8,physisorption
+Myricetin,1.6,physisorption,3.8,physisorption
+Chrysamine G,-34.3,chemisorption,29.9,chemisorption
+Baicalein,31.8,chemisorption,5.0,physisorption
+Apigenin,31.5,chemisorption,5.0,physisorption
+Fisetin,1.2,physisorption,4.5,physisorption
+Luteolin,31.9,chemisorption,5.2,physisorption
+Congo Red,-50.0,physisorption,17.6,chemisorption
+Rosmarinic Acid,-3.8,chemisorption,4.7,physisorption
+Honokiol,-54.8,physisorption,5.1,physisorption
+Anle138b,-54.9,physisorption,4.6,physisorption
+Tideglusib,-26.8,chemisorption,8.9,chemisorption
+AZD1080,-65.4,physisorption,5.3,physisorption
+Bexarotene,-0.1,chemisorption,5.1,physisorption
+Memantine,-67.7,physisorption,5.0,physisorption
+Rivastigmine,-67.5,physisorption,4.6,physisorption
+Tacrine,-12.1,physisorption,6.9,physisorption
+Donepezil,0.9,chemisorption,7.0,physisorption
+Galantamine,-110.7,physisorption,5.1,physisorption

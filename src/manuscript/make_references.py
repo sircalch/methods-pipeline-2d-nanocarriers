@@ -40,6 +40,12 @@ NO_DOI = {
     "pedregosa2011": "Pedregosa, F.; Varoquaux, G.; Gramfort, A.; Michel, V.; Thirion, B.; Grisel, O.; Blondel, M.; "
                      "Prettenhofer, P.; Weiss, R.; Dubourg, V.; et al. Scikit-learn: Machine Learning in Python. "
                      "J. Mach. Learn. Res. 2011, 12, 2825–2830.",
+    'zenodo_kras': 'Monreal Hernández, A. Atomistic Modeling and QSPR-Guided Screening of 2D Graphitic Carbon Nitride Nanocarriers for KRAS-G12D Inhibitor Loading and Target Engagement, version 2.0.0. Zenodo, 2026. https://doi.org/10.5281/zenodo.22700431',
+    'zenodo_tnbc': 'Monreal Hernández, A. Explainable AI and Quantum-Guided QSAR/QSPR Modeling of Triple-Negative Breast Cancer Therapeutics Loading on 2D Nanomaterials, version 2.0.0. Zenodo, 2026. https://doi.org/10.5281/zenodo.22700597',
+    'zenodo_gbm': 'Monreal Hernández, A. Explainable AI and Quantum Chemical Exploration of 2D Titanium Carbide MXene (Ti3C2Tx) Nanocarriers for Glioblastoma Therapeutics, version 2.0.0. Zenodo, 2026. https://doi.org/10.5281/zenodo.22700227',
+    'zenodo_tau': "Monreal Hernández, A. Machine Learning-Driven Nano-QSAR and Quantum Chemical Design of Functionalized 2D Borophene Nanocarriers for Alzheimer's Tau-Targeted Therapeutics, version 2.0.1. Zenodo, 2026. https://doi.org/10.5281/zenodo.22700723",
+    'zenodo_methods_v1': "Monreal Hernández, A. Don't Fool Yourself When Screening 2D-Nanomaterial Drug Carriers: A Reproducible GFN2-xTB + Docking + Leak-Free QSAR Pipeline, Four Disease Case Studies, and a Cautionary Tale, version 1.0.1. Zenodo, 2026. https://doi.org/10.5281/zenodo.22760388",
+    # Zenodo deposits of the pre-audit versions (DataCite DOIs, not in Crossref)
     "rdkit": "RDKit: Open-Source Cheminformatics, version 2024.03. https://www.rdkit.org "
              "(accessed 2026-09-26).",
 }

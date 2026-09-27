@@ -7,7 +7,7 @@
     },
     "TNBC": {
       "n": 33,
-      "wrong": 23,
+      "wrong": 24,
       "same_formula_wrong_connectivity": 3
     },
     "GBM": {
@@ -22,7 +22,7 @@
     },
     "total": {
       "n": 128,
-      "wrong": 54
+      "wrong": 55
     }
   },
   "carriers": [
@@ -312,7 +312,7 @@
       "Carmustine": 4.26,
       "Lomustine": 3.59,
       "Nimustine": 4.09,
-      "Temozolomide": 3.26
+      "Temozolomide": 3.25
     },
     "drug_length_A": {
       "Procarbazine": 13.8,

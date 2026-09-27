@@ -21,7 +21,7 @@ from matplotlib import font_manager as fm
 MM = 1 / 25.4
 SINGLE = 82.5 * MM                  # ACS single column (3.25 in)
 ONEHALF = 129 * MM
-DOUBLE = 177.8 * MM                 # ACS double column (7 in)
+DOUBLE = 177.8 * MM - 0.04          # ACS double column (7 in) minus the 2 × 0.02 in save padding
 
 _AVAIL = {f.name for f in fm.fontManager.ttflist}
 SANS = next((n for n in ("Arial", "Helvetica", "Liberation Sans", "DejaVu Sans")

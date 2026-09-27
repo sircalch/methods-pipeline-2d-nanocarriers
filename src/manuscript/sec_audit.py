@@ -11,7 +11,10 @@ def audit_methods(doc, ev, c):
     k.heading(doc, "The four case studies", 2)
     k.para(doc,
            "Each study paired a disease target with a cohort of drugs and a carrier model (Table 1). Before the "
-           "audit, each existed as a code repository, a data set and a manuscript. The audit rebuilt every "
+           "audit, each existed as a code repository, a data set and a manuscript; the supporting files of all "
+           "four, and a methods description built on them, had been deposited on Zenodo" +
+           c("zenodo_kras", "zenodo_tnbc", "zenodo_gbm", "zenodo_tau", "zenodo_methods_v1") + ". Those "
+           "records are the pre-audit state that this paper corrects. The audit rebuilt every "
            "study from its raw inputs (drug names, Protein Data Bank structures, carrier lattices) with scripts "
            "that regenerate every number and figure. Files from before the rebuild were moved to an archive and "
            "never deleted, so that each failure mode can be shown with the original files.", indent=True)

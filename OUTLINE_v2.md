@@ -20,7 +20,7 @@ its evidence and the check that catches it.
 
 | # | Failure mode | Evidence | Check |
 |---|---|---|---|
-| 1 | Wrong molecule for the name | 54 of 128 SMILES encoded a different compound (KRAS 0/33, TNBC 23/33, GBM 17/33, Tau 14/29) — `_auditoria_estructuras_2026-09-22/` | InChIKey against PubChem |
+| 1 | Wrong molecule for the name | 55 of 128 SMILES encoded a different compound (KRAS 0/33, TNBC 24/33, GBM 17/33, Tau 14/29) — `_auditoria_estructuras_2026-09-22/` | InChIKey against PubChem |
 | 2 | Chemically invalid carrier | old B36N36 with 36 B–B, 24 N–N and 60 B–N bonds; old g-C3N4 C21N21H6 and MXene Ti12C7O14 each with 4 C–C bonds — `data/carrier_audit.csv` | stoichiometry + forbidden-bond census |
 | 3 | Carrier reconstructs during adsorption | unconstrained B40H15 borophene: carrier energy in the complex up to 110 kcal/mol below its "minimum"; B/P g-C3N4: lower-energy dopant sites are P reconstructions, not substitution | E(carrier@complex) ≥ E(carrier, relaxed); bond census of the carrier in every complex |
 | 4 | Method outside its domain | GFN2-xTB puts the Ti3C2O2 lattice at 2.70 Å (3.03 Å), 31 eV/f.u. jump; GFN1 fails; finite flake: 1/18 neutral SCF | lattice scan / SCF test before any adsorption |

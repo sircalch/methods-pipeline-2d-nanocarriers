@@ -21,10 +21,23 @@ REPO = {"KRAS": P / "kras-pancreatic-gC3N4-ai", "TNBC": P / "nano-qsar-ai-therap
 HARTREE = 627.509
 
 
+def audit_table(s, f):
+    """Structure audit of one study, with the lookups that failed on 2026-09-22
+    resolved afterwards (audit_resolved_lookups.csv) applied."""
+    d = P / "_auditoria_estructuras_2026-09-22"
+    a = pd.read_csv(d / f"audit_{f}.csv")
+    res = pd.read_csv(d / "audit_resolved_lookups.csv")
+    for r in res[res.study == s].itertuples():
+        a.loc[a.name == r.name, "verdict"] = r.verdict
+    return a
+
+
 def identity():
     out = {}
     for s, f in (("KRAS", "kras"), ("TNBC", "tnbc"), ("GBM", "gbm"), ("Tau", "tau")):
-        a = pd.read_csv(P / "_auditoria_estructuras_2026-09-22" / f"audit_{f}.csv")
+        a = audit_table(s, f)
+        unchecked = int(a.verdict.str.startswith("CHECK").sum())
+        assert unchecked == 0, (s, unchecked)
         wrong = a[a.verdict.str.contains("WRONG")]
         out[s] = {"n": len(a), "wrong": len(wrong), "same_formula_wrong_connectivity":
                   int((wrong.ours_formula == wrong.pubchem_formula).sum())}
@@ -160,7 +173,41 @@ def qspr():
     return out
 
 
+def si_tables():
+    """Per-row tables behind the Supporting Information, copied into data/ so that
+    the SI can be rebuilt from this repository alone."""
+    rows = []
+    for s, f in (("KRAS", "kras"), ("TNBC", "tnbc"), ("GBM", "gbm"), ("Tau", "tau")):
+        a = audit_table(s, f)
+        a.insert(0, "study", s)
+        rows.append(a[["study", "name", "ours_formula", "pubchem_formula", "skeleton_match", "verdict"]])
+    pd.concat(rows).to_csv(HERE / "data" / "si_identity_audit.csv", index=False)
+
+    tau = REPO["Tau"]
+    e_old = json.loads((tau / "data" / "processed" / "carrier_B40H15_collapsing_2026-09-24.json").read_text())["E_Eh"]
+    e_new = json.loads((tau / "data" / "processed" / "carrier.json").read_text())["E_Eh"]
+    old = pd.read_csv(tau / "results" / "quantum" / "adsorption_results_B40H15_collapsing_2026-09-24.csv")
+    new = pd.read_csv(tau / "results" / "quantum" / "adsorption_results.csv")
+    t = old[["name", "E_carrier_frozen_Eh", "adsorption_mode"]].merge(
+        new[["name", "E_carrier_frozen_Eh", "adsorption_mode"]], on="name", suffixes=("_old", "_new"))
+    t["dEcar_old_kcal"] = ((t.E_carrier_frozen_Eh_old - e_old) * HARTREE).round(1)
+    t["dEcar_new_kcal"] = ((t.E_carrier_frozen_Eh_new - e_new) * HARTREE).round(1)
+    t[["name", "dEcar_old_kcal", "adsorption_mode_old", "dEcar_new_kcal", "adsorption_mode_new"]].to_csv(
+        HERE / "data" / "si_tau_carrier_energy.csv", index=False)
+
+    rows = []
+    for s in ("KRAS", "TNBC", "Tau", "GBM"):
+        f = REPO[s] / ("data/processed" if s == "TNBC" else "results/docking") / "redocking_validation.csv"
+        for r in pd.read_csv(f).itertuples():
+            rows.append({"study": s, "receptor": "", "control": r.control, "rmsd_top_A": r.rmsd_heavy_atom_A})
+    for r in pd.read_csv(ARCH / "gbm" / "docking_4ZAU_failed_controls" / "redocking_validation.csv").itertuples():
+        rows.append({"study": "GBM (before rebuild)", "receptor": "", "control": r.control,
+                     "rmsd_top_A": r.rmsd_heavy_atom_A})
+    pd.DataFrame(rows).to_csv(HERE / "data" / "si_docking_controls.csv", index=False)
+
+
 def main():
+    si_tables()
     ev = {"identity": identity(), "carriers": carriers(), "reconstruction": reconstruction(),
           "method": method(), "docking": docking(), "fabricated": fabricated(), "periodic": periodic(),
           "qspr": qspr()}

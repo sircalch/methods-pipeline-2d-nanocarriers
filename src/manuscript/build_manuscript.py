@@ -86,7 +86,7 @@ def abstract(doc, ev):
            "periodic image; and a leak-free QSPR model that was significant on energies from an invalid carrier "
            f"(*Q*^{{2}}_{{CV}} = {q['KRAS_v1_reproduced']['Q2_CV']:.2f}, *p* = "
            f"{q['KRAS_v1_reproduced']['p_perm']:.3f}) had no predictive power on energies from a valid one "
-           f"({q['KRAS:dE_int']['Q2_CV']:.2f})".replace("-", "−") + ". Each failure mode is caught by a check that costs less than the "
+           "(" + f"{q['KRAS:dE_int']['Q2_CV']:.2f}".replace("-", "−") + "). Each failure mode is caught by a check that costs less than the "
            "calculation it protects. We describe the evidence for each and collect the checks into a list to "
            "apply before any model is fitted.")
 
@@ -106,6 +106,11 @@ def case_table(doc):
 
 
 def declarations(doc):
+    k.heading(doc, "Associated Content")
+    k.para(doc, "**Supporting Information.** The Supporting Information is available free of charge: identity of "
+                "the 128 drug structures (Table S1), bond census of the carrier models (Table S2), carrier "
+                "energy in each tau complex before and after the rebuild (Table S3), redocking controls of the "
+                "four studies (Table S4) and the QSPR models before and after the rebuild (Table S5) (PDF).")
     k.heading(doc, "Data and Software Availability")
     k.para(doc, "The scripts that extract every number and figure of this paper from the four case-study "
                 f"repositories and from the archive of the pre-rebuild files are available at {REPO} under the MIT "
