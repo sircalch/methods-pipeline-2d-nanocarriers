@@ -73,8 +73,8 @@ def results(doc, ev, c):
            "wrong connectivity, among them doxorubicin and epirubicin, and were found only through the InChIKey. "
            "Every descriptor, docking score and adsorption energy computed from these structures belonged to "
            "another molecule. This failure mode is well known in cheminformatics" + c("fourches2010", "williams2011") +
-           "; it went unnoticed here because the SMILES strings had not been retrieved from, or compared with, "
-           "a chemical database, and no later step of the workflow depends on the name of a compound.",
+           "; it went unnoticed here because the SMILES strings had never been checked against a chemical "
+           "database, and no later step of the workflow depends on the name of a compound.",
            indent=True)
 
     # 2 carrier validity
@@ -110,9 +110,11 @@ def results(doc, ev, c):
            f"but in {t['n_below_min']} of {t['n']} complexes the carrier fragment ended "
            f"below that minimum, by up to {f1(-t['min_kcal'])} kcal mol^{{−1}} (Figure 3a, Table S3): the free flake "
            "contracted toward a compact boron cluster, and the computed binding energies contained the energy "
-           f"of that reconstruction. The classification of the drugs followed: {t['chem_old']} of {t['n']} "
-           "appeared to chemisorb (Figure 3b), and the earlier version of this work presented that result as a "
-           "hidden chemisorption regime. Borophene exists only on a supporting metal" + c("feng2016", "mannix2015") +
+           f"of that reconstruction. The classification of the drugs was affected as well: on the free flake "
+           f"{t['chem_old']} of {t['n']} drugs appeared to chemisorb (Figure 3b), and the version of the study "
+           "deposited before the audit" + c("zenodo_tau") + f" had reported {rc['tau_v1_reported']['chem']} of "
+           f"{rc['tau_v1_reported']['n']} ligands as chemisorbed on the same flake. Borophene exists only on a "
+           "supporting metal" + c("feng2016", "mannix2015") +
            ", which keeps it planar; a flat β_{12} sheet with its boron atoms restrained to the lattice does not "
            f"reconstruct (carrier energy in the complexes {f1(rc['tau_new_dcar_kcal'][0])} to "
            f"{f1(rc['tau_new_dcar_kcal'][1])} kcal mol^{{−1}} above its reference), and on it only "
@@ -124,8 +126,8 @@ def results(doc, ev, c):
            "The same test applies to doped carriers. In a scan of boron/phosphorus co-doping sites in "
            f"g-C_{{3}}N_{{4}}, {kb2['n_rejected_lower']} of {kb2['n_configs']} configurations were lower in energy "
            f"than the substitutional one finally used, by up to {f1(kb2['lowest_rejected_below_accepted_kcal'])} "
-           "kcal mol^{−1}, but in all of them phosphorus had become four-coordinate or the lattice had "
-           "reconstructed. Ranking by energy alone would have selected a structure that is no longer the doped "
+           "kcal mol^{−1}, but in none of them were both dopants still three-coordinate and bonded only to "
+           "nitrogen, as substitution requires. Ranking by energy alone would have selected a structure that is no longer the doped "
            "material; the bond census of the carrier has to accompany the energy.", indent=True)
     k.figure(doc, FIG / "Fig3.png", 3,
              "Carrier reconstruction during adsorption. (a) Energy of the carrier fragment frozen at its geometry "

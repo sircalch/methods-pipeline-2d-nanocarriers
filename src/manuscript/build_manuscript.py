@@ -79,8 +79,8 @@ def abstract(doc, ev):
            "Ti_{3}C_{2}O_{2} MXene and tau filaments with β_{12} borophene — and found eight failure modes that "
            f"this validation cannot detect. Of {idt['total']['n']} drug structures, {idt['total']['wrong']} "
            "encoded a different compound; three of the four carrier models contained bonds the material cannot "
-           "have; a borophene flake reconstructed during adsorption, which turned "
-           f"{rc['chem_old']} of {rc['n']} drugs into apparent chemisorbers against {rc['chem_new']} on a stable "
+           "have; a borophene flake reconstructed during adsorption, and on it "
+           f"{rc['chem_old']} of {rc['n']} drugs appeared to chemisorb, against {rc['chem_new']} on a stable "
            "sheet; GFN2-xTB and GFN1-xTB could not describe the metallic MXene; two docking protocols failed or "
            "could not fail their controls; a virtual screen contained no structures; a drug overlapped its "
            "periodic image; and a leak-free QSPR model that was significant on energies from an invalid carrier "
@@ -101,8 +101,8 @@ def case_table(doc):
     k.table(doc, (1, "The four case studies after the rebuild."),
             ["Target (disease)", "PDB", "Carrier model", "Drugs", "Adsorption method"], rows, align="llllc",
             font=8.5, note="Drugs, number in the rebuilt cohort (organic compounds with a structure that could "
-                           "be docked and adsorbed). For the MXene, periodic DFT adsorption was computed for "
-                           "the alkylating agents.")
+                           "be docked and adsorbed). For the MXene, adsorption of the alkylating agents is "
+                           "computed with periodic DFT (PBE-D3), because the tight-binding methods fail for it.")
 
 
 def declarations(doc):

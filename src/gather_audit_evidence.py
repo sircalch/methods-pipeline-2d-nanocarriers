@@ -66,7 +66,15 @@ def reconstruction():
     bp = pd.read_csv(REPO["KRAS"] / "results" / "quantum" / "bp_codoping_scan.csv")
     acc = bp[bp.accepted.astype(bool)]
     lower_rej = bp[(~bp.accepted.astype(bool)) & (bp.E_singlet_Eh < acc.E_singlet_Eh.min())]
-    return {"tau_old": {"n": len(d_old), "n_below_min": int((d_old < -1).sum()),
+    # what the pre-audit tau study reported on the same free B40H15 flake (its Supporting
+    # Information, the file deposited on Zenodo before the audit)
+    import re
+    from docx import Document
+    txt = " ".join(x.text for x in Document(ARCH / "tau" / "manuscript" /
+                                           "Tau_Borophene_Supporting_Information.docx").paragraphs)
+    mv1 = re.search(r"(\d+) of the (\d+) ligands fall in this regime", txt)
+    return {"tau_v1_reported": {"chem": int(mv1.group(1)), "n": int(mv1.group(2))},
+            "tau_old": {"n": len(d_old), "n_below_min": int((d_old < -1).sum()),
                         "min_kcal": float(d_old.min()), "chem_old": int((old.adsorption_mode == "chemisorption").sum()),
                         "chem_new": int((new.adsorption_mode == "chemisorption").sum()), "n_new": len(new)},
             "tau_new_dcar_kcal": [float(d_new.min()), float(d_new.max())],

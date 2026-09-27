@@ -84,6 +84,10 @@
     }
   ],
   "reconstruction": {
+    "tau_v1_reported": {
+      "chem": 12,
+      "n": 29
+    },
     "tau_old": {
       "n": 28,
       "n_below_min": 17,

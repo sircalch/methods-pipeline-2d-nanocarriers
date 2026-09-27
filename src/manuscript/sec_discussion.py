@@ -48,10 +48,11 @@ def discussion(doc, ev, c):
             ["Check", "What to do", "Failure mode"], [[a, b, n] for a, b, n in CHECKLIST], align="llc", font=8.5)
     k.para(doc,
            "The audit also changed what the four studies report. With valid structures and carriers, the "
-           "screens describe physisorption on the undoped carriers and chemisorption where the carrier offers a "
-           "reactive site (the phosphorus of B/P-doped carbon nitride, the boron of the nitride cage), docking "
-           "scores that are a ranking of fit rather than affinities, and descriptor models that do not predict "
-           "adsorption energies usefully. These are modest results, and they are the ones the calculations support.", indent=True)
+           "screens describe physisorption on pristine carbon nitride and, for part of the drugs, chemisorption "
+           "where the carrier offers a reactive site (the phosphorus of B/P-doped carbon nitride, the boron atoms "
+           f"of the nitride cage and, for {ev['reconstruction']['tau_old']['chem_new']} drugs, the borophene sheet), "
+           "docking scores that are a ranking of fit rather than affinities, and descriptor models that predict "
+           "their targets weakly or not at all. These are modest results, and they are the ones the calculations support.", indent=True)
     k.heading(doc, "Limitations", 2)
     k.para(doc,
            "The audit covers four studies by one author, so the frequencies reported here — for instance, "
