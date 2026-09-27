@@ -1,0 +1,9 @@
+system,model,material,formula,n_atoms,bonds,forbidden_bonds,file
+KRAS,before,g-C3N4,C21N21H6,48,C-C 4; C-N 41; H-N 5,C-C 4,_archivo/nano-qsar-limpieza-2026-09-22/kras/invalid_C21N21H6_carrier/gC3N4_pristine.xyz
+KRAS,after,g-C3N4,C18N27H9,54,C-N 54; H-N 9,none,nano-qsar-ai-papers/kras-pancreatic-gC3N4-ai/data/quantum/structures/gC3N4_pristine.xyz
+TNBC,before,BN cage,B36N36,72,B-B 36; B-N 60; N-N 24,B-B 36; N-N 24,_archivo/nano-qsar-limpieza-2026-09-22/tnbc/calculations/tnbc/B36N36_pristine.xyz
+TNBC,after,BN cage,B36N36,72,B-N 108; B...B 4-ring diagonal 6,none,nano-qsar-ai-papers/nano-qsar-ai-therapeutics/calculations/tnbc/B36N36_optimized.xyz
+GBM,before,Ti3C2O2,Ti12C7O14,33,C-C 4; C-Ti 9; O-Ti 28,C-C 4,nano-qsar-ai-papers/mxene-glioblastoma-qsar-ai/calculations/gbm/Ti12C7O14_optimized.xyz
+GBM,after,Ti3C2O2,Ti48C32O32,112,C-Ti 153; O-Ti 73,none,nano-qsar-ai-papers/mxene-glioblastoma-qsar-ai/calculations/gbm_dft/slab_start.xyz
+Tau,before,borophene,B40H15,55,B-B 73; B-H 15,none,borophene-alzheimer-tau-ai/calculations/tau/beta12_B40H15_doublet_optimized.xyz
+Tau,after,borophene,B44H16,60,B-B 94; B-H 16,none,borophene-alzheimer-tau-ai/calculations/tau/beta12_flat/u0.xtbopt.xyz

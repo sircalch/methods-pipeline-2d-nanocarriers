@@ -1,0 +1,380 @@
+{
+  "identity": {
+    "KRAS": {
+      "n": 33,
+      "wrong": 0,
+      "same_formula_wrong_connectivity": 0
+    },
+    "TNBC": {
+      "n": 33,
+      "wrong": 23,
+      "same_formula_wrong_connectivity": 3
+    },
+    "GBM": {
+      "n": 33,
+      "wrong": 17,
+      "same_formula_wrong_connectivity": 0
+    },
+    "Tau": {
+      "n": 29,
+      "wrong": 14,
+      "same_formula_wrong_connectivity": 3
+    },
+    "total": {
+      "n": 128,
+      "wrong": 54
+    }
+  },
+  "carriers": [
+    {
+      "system": "KRAS",
+      "model": "before",
+      "formula": "C21N21H6",
+      "bonds": "C-C 4; C-N 41; H-N 5",
+      "forbidden_bonds": "C-C 4"
+    },
+    {
+      "system": "KRAS",
+      "model": "after",
+      "formula": "C18N27H9",
+      "bonds": "C-N 54; H-N 9",
+      "forbidden_bonds": "none"
+    },
+    {
+      "system": "TNBC",
+      "model": "before",
+      "formula": "B36N36",
+      "bonds": "B-B 36; B-N 60; N-N 24",
+      "forbidden_bonds": "B-B 36; N-N 24"
+    },
+    {
+      "system": "TNBC",
+      "model": "after",
+      "formula": "B36N36",
+      "bonds": "B-N 108; B...B 4-ring diagonal 6",
+      "forbidden_bonds": "none"
+    },
+    {
+      "system": "GBM",
+      "model": "before",
+      "formula": "Ti12C7O14",
+      "bonds": "C-C 4; C-Ti 9; O-Ti 28",
+      "forbidden_bonds": "C-C 4"
+    },
+    {
+      "system": "GBM",
+      "model": "after",
+      "formula": "Ti48C32O32",
+      "bonds": "C-Ti 153; O-Ti 73",
+      "forbidden_bonds": "none"
+    },
+    {
+      "system": "Tau",
+      "model": "before",
+      "formula": "B40H15",
+      "bonds": "B-B 73; B-H 15",
+      "forbidden_bonds": "none"
+    },
+    {
+      "system": "Tau",
+      "model": "after",
+      "formula": "B44H16",
+      "bonds": "B-B 94; B-H 16",
+      "forbidden_bonds": "none"
+    }
+  ],
+  "reconstruction": {
+    "tau_old": {
+      "n": 28,
+      "n_below_min": 17,
+      "min_kcal": -110.7296112453321,
+      "chem_old": 17,
+      "chem_new": 3,
+      "n_new": 28
+    },
+    "tau_new_dcar_kcal": [
+      3.7639913756298866,
+      29.854904296312984
+    ],
+    "tnbc_cage_dcar_kcal": [
+      0.042537250661146574,
+      31.62682981612922
+    ],
+    "kras_bp": {
+      "n_configs": 42,
+      "n_rejected_lower": 19,
+      "lowest_rejected_below_accepted_kcal": 40.067876782422715
+    }
+  },
+  "method": {
+    "gfn2_min_a": 2.7,
+    "a_ref": 3.03,
+    "gfn2_max_jump_eV": 30.98590014835247,
+    "gfn1_failed": 6,
+    "gfn1_n": 14,
+    "gfn1_unphysical": 2,
+    "flake_neutral_attempts": 18,
+    "flake_neutral_converged": 1
+  },
+  "docking": {
+    "KRAS": [
+      {
+        "control": "self-redock, crystal conformation",
+        "rmsd_A": 0.514
+      },
+      {
+        "control": "production protocol, from SMILES",
+        "rmsd_A": 1.247
+      }
+    ],
+    "TNBC": [
+      {
+        "control": "self-redock, crystal conformation",
+        "rmsd_A": 0.507
+      },
+      {
+        "control": "production protocol, from SMILES",
+        "rmsd_A": 1.267
+      }
+    ],
+    "Tau": [
+      {
+        "control": "ligand-free fibril: self-redock, crystal conformation",
+        "rmsd_A": 6.731
+      },
+      {
+        "control": "ligand-free fibril: production protocol, from SMILES",
+        "rmsd_A": 6.282
+      },
+      {
+        "control": "tracer stack present: self-redock, crystal conformation",
+        "rmsd_A": 0.713
+      },
+      {
+        "control": "tracer stack present: production protocol, from SMILES",
+        "rmsd_A": 2.814
+      }
+    ],
+    "GBM": [
+      {
+        "control": "self-redock, crystal conformation",
+        "rmsd_A": 5.938
+      },
+      {
+        "control": "production protocol, from SMILES",
+        "rmsd_A": 7.614
+      }
+    ],
+    "GBM_modes": [
+      {
+        "control": "self-redock, crystal conformation",
+        "mode": 1,
+        "vina_kcal_mol": -7.02,
+        "rmsd_A": 5.938
+      },
+      {
+        "control": "self-redock, crystal conformation",
+        "mode": 2,
+        "vina_kcal_mol": -6.935,
+        "rmsd_A": 7.958
+      },
+      {
+        "control": "self-redock, crystal conformation",
+        "mode": 3,
+        "vina_kcal_mol": -6.885,
+        "rmsd_A": 9.45
+      },
+      {
+        "control": "self-redock, crystal conformation",
+        "mode": 4,
+        "vina_kcal_mol": -6.836,
+        "rmsd_A": 6.034
+      },
+      {
+        "control": "self-redock, crystal conformation",
+        "mode": 5,
+        "vina_kcal_mol": -6.829,
+        "rmsd_A": 4.753
+      },
+      {
+        "control": "self-redock, crystal conformation",
+        "mode": 6,
+        "vina_kcal_mol": -6.808,
+        "rmsd_A": 1.126
+      },
+      {
+        "control": "self-redock, crystal conformation",
+        "mode": 7,
+        "vina_kcal_mol": -6.785,
+        "rmsd_A": 8.815
+      },
+      {
+        "control": "self-redock, crystal conformation",
+        "mode": 8,
+        "vina_kcal_mol": -6.758,
+        "rmsd_A": 2.329
+      },
+      {
+        "control": "self-redock, crystal conformation",
+        "mode": 9,
+        "vina_kcal_mol": -6.745,
+        "rmsd_A": 7.421
+      },
+      {
+        "control": "production protocol, from SMILES",
+        "mode": 1,
+        "vina_kcal_mol": -7.284,
+        "rmsd_A": 7.614
+      },
+      {
+        "control": "production protocol, from SMILES",
+        "mode": 2,
+        "vina_kcal_mol": -7.214,
+        "rmsd_A": 4.916
+      },
+      {
+        "control": "production protocol, from SMILES",
+        "mode": 3,
+        "vina_kcal_mol": -7.176,
+        "rmsd_A": 5.97
+      },
+      {
+        "control": "production protocol, from SMILES",
+        "mode": 4,
+        "vina_kcal_mol": -7.163,
+        "rmsd_A": 6.019
+      },
+      {
+        "control": "production protocol, from SMILES",
+        "mode": 5,
+        "vina_kcal_mol": -7.13,
+        "rmsd_A": 8.437
+      },
+      {
+        "control": "production protocol, from SMILES",
+        "mode": 6,
+        "vina_kcal_mol": -7.042,
+        "rmsd_A": 8.32
+      },
+      {
+        "control": "production protocol, from SMILES",
+        "mode": 7,
+        "vina_kcal_mol": -7.013,
+        "rmsd_A": 1.443
+      },
+      {
+        "control": "production protocol, from SMILES",
+        "mode": 8,
+        "vina_kcal_mol": -6.882,
+        "rmsd_A": 7.987
+      },
+      {
+        "control": "production protocol, from SMILES",
+        "mode": 9,
+        "vina_kcal_mol": -6.833,
+        "rmsd_A": 7.249
+      }
+    ],
+    "GBM_4ZAU_before": [
+      {
+        "control": "self-redock, crystal conformation",
+        "rmsd_A": 8.613
+      },
+      {
+        "control": "production protocol, from SMILES",
+        "rmsd_A": 5.376
+      }
+    ]
+  },
+  "fabricated": {
+    "n_rows": 350,
+    "has_structure_column": false,
+    "n_scaffolds": 7,
+    "descriptors_from_random_numbers": true,
+    "columns": [
+      "compound_id",
+      "parent_scaffold",
+      "MW",
+      "LogP",
+      "PSA",
+      "Polarizability_alpha",
+      "Electrophilicity_omega",
+      "MW_norm",
+      "PSA_norm",
+      "Alpha_norm",
+      "Omega_norm",
+      "Predicted_Composite_DeltaG"
+    ]
+  },
+  "periodic": {
+    "image_distance_A": {
+      "Procarbazine": 0.56,
+      "Carmustine": 4.26,
+      "Lomustine": 3.59,
+      "Nimustine": 4.09,
+      "Temozolomide": 3.26
+    },
+    "drug_length_A": {
+      "Procarbazine": 13.8,
+      "Carmustine": 7.9,
+      "Lomustine": 10.7,
+      "Nimustine": 10.1,
+      "Temozolomide": 9.2
+    },
+    "cell_A": 12.12
+  },
+  "qspr": {
+    "KRAS:dE_int": {
+      "n": 33,
+      "Q2_CV": -0.31793225468074904,
+      "p_perm": 0.989010989010989
+    },
+    "TNBC:vina_4UND_kcal_mol": {
+      "n": 30,
+      "Q2_CV": -0.08335178553322131,
+      "p_perm": 0.35264735264735264
+    },
+    "TNBC:delta_Eint_SP_kcal_mol": {
+      "n": 29,
+      "Q2_CV": -0.07578552240662328,
+      "p_perm": 0.3246753246753247
+    },
+    "Tau:dE_int": {
+      "n": 26,
+      "Q2_CV": 0.23365140454346267,
+      "p_perm": 0.003996003996003996
+    },
+    "GBM:vina": {
+      "n": 32,
+      "Q2_CV": 0.1696266710062545,
+      "p_perm": 0.003996003996003996
+    },
+    "KRAS_v1": {
+      "n_samples": 33,
+      "p_descriptors": 4,
+      "selected_descriptors": [
+        "MW",
+        "PSA",
+        "Polarizability_alpha",
+        "Electrophilicity_omega"
+      ],
+      "cv_scheme": "leak-free nested 5x5 CV (StandardScaler inside pipeline; inner RidgeCV over Ridge alpha)",
+      "Q2_CV": 0.584,
+      "fold_Q2": [
+        0.7842,
+        0.3584,
+        0.0522,
+        0.6715,
+        0.7071
+      ],
+      "Y_Scrambling_Empirical_P": 0.001,
+      "RMSE_kcal_mol": 5.114
+    },
+    "KRAS_v1_reproduced": {
+      "n": 33,
+      "Q2_CV": 0.5823736856622044,
+      "p_perm": 0.000999000999000999,
+      "target": "Delta_E_ads on the invalid C21N21H6 carrier (v1)"
+    }
+  }
+}
