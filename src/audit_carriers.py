@@ -70,6 +70,17 @@ def census(el, xyz):
     return c
 
 
+def overlaps(el, xyz):
+    """Closest atom pair, and pairs closer than 0.6 x the sum of covalent radii (a Ti=O
+    titanyl bond, 1.6 A, stays above it):
+    atoms placed almost on top of each other, which no bond criterion should count."""
+    from scipy.spatial.distance import pdist, squareform
+    D = squareform(pdist(xyz))
+    np.fill_diagonal(D, np.inf)
+    over = [D[i, j] for i, j in combinations(range(len(el)), 2) if D[i, j] < 0.6 * (COV[el[i]] + COV[el[j]])]
+    return float(D.min()), len(over)
+
+
 def main():
     rows = []
     for system, when, material, f in CARRIERS:
@@ -84,6 +95,7 @@ def main():
         rows.append({"system": system, "model": when, "material": material, "formula": formula,
                      "n_atoms": len(el), "bonds": "; ".join(f"{k} {v}" for k, v in sorted(c.items())),
                      "forbidden_bonds": "; ".join(f"{k} {v}" for k, v in sorted(bad.items())) or "none",
+                     "min_distance_A": round(overlaps(el, xyz)[0], 2), "overlapping_pairs": overlaps(el, xyz)[1],
                      "file": str(Path(f).relative_to(ROOT)).replace("\\", "/")})
     df = pd.DataFrame(rows)
     out = HERE / "data" / "carrier_audit.csv"

@@ -43,7 +43,8 @@ def audit_methods(doc, ev, c):
            "nitride, and C–C, C–O and O–O in Ti_{3}C_{2}O_{2}. In boron nitride cages the transannular "
            "B···B contact across a four-membered B_{2}N_{2} ring (about 1.86 Å) falls inside the bond criterion; "
            "such pairs, recognized because they share two nitrogen neighbours, were counted separately and not "
-           "as bonds.", indent=True)
+           "as bonds. Pairs closer than 0.6 times the sum of the covalent radii, which no chemical bond reaches, "
+           "were counted as overlapping atoms.", indent=True)
     k.para(doc,
            "*Carrier stability.* A carrier model is only useful if it keeps its structure during the adsorption "
            "calculation. For every complex, the energy of the carrier fragment frozen at its geometry in the "

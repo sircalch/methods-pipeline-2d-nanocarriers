@@ -85,7 +85,8 @@ def results(doc, ev, c):
            "Three of the four carrier models were not the materials they were named after (Figure 2b, Table S2). The "
            f"B_{{36}}N_{{36}} cage of the TNBC study had the right formula but {tbc['B-B']} B–B and {tbc['N-N']} "
            f"N–N bonds and only {tbc['B-N']} B–N bonds, whereas in a boron nitride cage every bond joins boron to "
-           "nitrogen" + c("strout2000") + ". The graphitic carbon nitride model of the KRAS study, "
+           "nitrogen" + c("strout2000") + f". Worse, {int(tb.overlapping_pairs)} of those B–N pairs were atoms "
+           f"placed almost on top of each other, as close as {f2(tb.min_distance_A)} Å. The graphitic carbon nitride model of the KRAS study, "
            f"{sub(kb.formula)}, had the wrong stoichiometry for heptazine-based g-C_{{3}}N_{{4}}" + c("kroke2002") +
            f" and {kbc['C-C']} C–C bonds. The MXene of the glioblastoma study, {sub(gb.formula)}, did not have "
            f"the Ti_{{3}}C_{{2}}O_{{2}} composition and contained {gbc['C-C']} C–C bonds. The rebuilt models — a heptazine pore "
@@ -96,7 +97,9 @@ def results(doc, ev, c):
              "Identity of the drugs and validity of the carriers before the rebuild. (a) Drug structures that "
              "match PubChem and structures that encode a different compound, per study; hatched, same formula "
              "but different connectivity. (b) Bonds that the ideal material cannot contain, in the carrier "
-             "models before and after the rebuild; formulas below each study")
+             "models before and after the rebuild; formulas below each study. (c) The three invalid carrier models, "
+             "drawn with the bond criterion of the audit; bonds that the material cannot contain in amber. In the "
+             "B_{36}N_{36} model, pairs of boron and nitrogen atoms sit almost on top of each other")
 
     # 3 reconstruction
     k.heading(doc, "3. The carrier changes during the calculation", 2)
@@ -128,7 +131,9 @@ def results(doc, ev, c):
              "Carrier reconstruction during adsorption. (a) Energy of the carrier fragment frozen at its geometry "
              "in each complex, relative to the relaxed carrier; negative values (shaded) mean that the carrier "
              "reached a structure below its own minimum. (b) Number of tau drugs classified as chemisorbed on "
-             "the free flake and on the supported sheet")
+             "the free flake and on the supported sheet. (c) Galantamine, the extreme case: the free B_{40}H_{15} flake "
+             "relaxed alone, the same flake in the relaxed complex, which has collapsed into a three-dimensional "
+             "cluster, and the supported β_{12} sheet in the relaxed complex (GFN2-xTB, side views)")
 
     # 4 method
     k.heading(doc, "4. The method cannot describe the carrier", 2)

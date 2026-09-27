@@ -60,13 +60,15 @@ def main():
 
     c = pd.read_csv(DATA / "carrier_audit.csv")
     rows = [[STUDY[r.system], r.model, r.material, formula(r.formula), str(r.n_atoms), r.bonds.replace("-", "–"),
-             r.forbidden_bonds.replace("-", "–")] for r in c.itertuples()]
+             r.forbidden_bonds.replace("-", "–"), f"{r.min_distance_A:.2f}", str(r.overlapping_pairs)]
+            for r in c.itertuples()]
     k.table(doc, ("S2", "Bond census of the carrier models before and after the rebuild (bond when the distance is "
                         "below 1.15 times the sum of the covalent radii). B···B distances across the diagonal "
                         "of the four-membered rings of the BN cage (about 1.86 Å) are listed separately and "
-                        "are not bonds."),
-            ["Study", "Model", "Material", "Formula", "Atoms", "Bonds", "Forbidden bonds"], rows,
-            align="llllcll", font=7.5)
+                        "are not bonds. *d*_{min}, closest atom pair (Å); overlapping, pairs closer than 0.6 times the sum "
+                        "of the covalent radii."),
+            ["Study", "Model", "Material", "Formula", "Atoms", "Bonds", "Forbidden bonds", "*d*_{min}",
+             "Overlapping"], rows, align="llllcllcc", font=7)
 
     t = pd.read_csv(DATA / "si_tau_carrier_energy.csv")
     rows = [[r.name, num(r.dEcar_old_kcal), r.adsorption_mode_old, num(r.dEcar_new_kcal), r.adsorption_mode_new]

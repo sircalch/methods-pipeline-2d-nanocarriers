@@ -177,7 +177,10 @@ def fig2():
     """Compound identity and carrier validity before the rebuild."""
     idt = EV["identity"]
     ca = pd.read_csv(BASE / "data" / "carrier_audit.csv")
-    fig, axs = plt.subplots(1, 2, figsize=(S.DOUBLE, 62 * S.MM), gridspec_kw=dict(wspace=0.55))
+    fig = plt.figure(figsize=(S.DOUBLE, 118 * S.MM))
+    gs = fig.add_gridspec(2, 1, height_ratios=[1, 0.78], hspace=0.62, top=0.95, bottom=0.03)
+    top = gs[0].subgridspec(1, 2, wspace=0.55)
+    axs = [fig.add_subplot(top[0]), fig.add_subplot(top[1])]
     ax = axs[0]
     y = np.arange(len(STUDIES))[::-1]
     for yi, s in zip(y, STUDIES):
@@ -218,6 +221,28 @@ def fig2():
     ax.legend(frameon=False, fontsize=6, loc="upper right")
     K.light_grid(ax, "y")
     letters(fig, axs)
+    # c: the three invalid carriers, drawn with the audit's own bonds
+    import matplotlib.image as mpimg
+    from matplotlib.lines import Line2D
+    bot = gs[1].subgridspec(1, 3, wspace=0.08)
+    cax = []
+    for k, (s_, png) in enumerate((("KRAS", "old_KRAS"), ("TNBC", "old_TNBC"), ("GBM", "old_GBM"))):
+        r = ca[(ca.system == s_) & (ca.model == "before")].iloc[0]
+        a = fig.add_subplot(bot[k])
+        a.imshow(mpimg.imread(FIG / "_renders" / f"{png}.png"), interpolation="lanczos")
+        a.set_axis_off()
+        parts = [x.split() for x in r.forbidden_bonds.split(";")]
+        fb = " and ".join(f"{n_} {b.replace('-', '–')}" for b, n_ in parts) + " bonds"
+        extra = f"; {int(r.overlapping_pairs)} overlapping atom pairs" if r.overlapping_pairs else ""
+        a.set_title(f"{LABEL[s_].split(' / ')[0]}: {sub(r.formula)}", fontsize=6.8, loc="center", pad=2)
+        a.text(0.5, -0.03, f"{fb}{extra}", transform=a.transAxes, ha="center", va="top", fontsize=6,
+               color=S.INK)
+        cax.append(a)
+    fig.canvas.draw()
+    p0 = cax[0].get_position()
+    fig.text(axs[0].get_position().x0 - 0.045, p0.y1 + 0.035, "c", fontsize=9, fontweight="bold", va="bottom")
+    fig.legend(handles=[Line2D([], [], color="#faa80d", lw=2.2, label="bond the material cannot contain")],
+               loc="lower right", bbox_to_anchor=(0.99, p0.y1 + 0.02), frameon=False, fontsize=6)
     S.save(fig, FIG, "Fig2")
 
 
@@ -237,7 +262,10 @@ def fig3():
     sets = [("Tau, free B$_{40}$H$_{15}$ flake\n(before)", (old.E_carrier_frozen_Eh - e_old) * 627.509, BEFORE),
             ("Tau, supported β$_{12}$ sheet\n(rebuilt)", (new.E_carrier_frozen_Eh - e_new) * 627.509, AFTER),
             ("TNBC, B$_{36}$N$_{36}$ cage\n(rebuilt)", np.array(cage), AFTER)]
-    fig, axs = plt.subplots(1, 2, figsize=(S.DOUBLE, 64 * S.MM), gridspec_kw=dict(width_ratios=[1.6, 1], wspace=0.4))
+    fig = plt.figure(figsize=(S.DOUBLE, 118 * S.MM))
+    gs = fig.add_gridspec(2, 1, height_ratios=[1, 0.72], hspace=0.42, top=0.95, bottom=0.04)
+    top = gs[0].subgridspec(1, 2, width_ratios=[1.6, 1], wspace=0.4)
+    axs = [fig.add_subplot(top[0]), fig.add_subplot(top[1])]
     ax = axs[0]
     rng = np.random.default_rng(0)
     for i, (lab, v, col) in enumerate(sets):
@@ -264,6 +292,27 @@ def fig3():
     ax.yaxis.set_major_locator(MaxNLocator(integer=True))
     K.light_grid(ax, "y")
     letters(fig, axs)
+    # c: galantamine, the extreme case, on the free flake and on the supported sheet
+    import matplotlib.image as mpimg
+    g = pd.read_csv(BASE / "data" / "si_tau_carrier_energy.csv").set_index("name").loc["Galantamine"]
+    bot = gs[1].subgridspec(1, 3, wspace=0.06)
+    panels = [("tau_old_flake", "free B$_{40}$H$_{15}$ flake, relaxed alone", "reference energy", S.INK),
+              ("tau_old_galantamine", "the same flake under galantamine",
+               f"{abs(g.dEcar_old_kcal):.1f} kcal mol$^{{-1}}$ below the reference", BEFORE),
+              ("tau_new_galantamine", "supported β$_{12}$ sheet under galantamine",
+               f"{g.dEcar_new_kcal:.1f} kcal mol$^{{-1}}$ above its own minimum", AFTER)]
+    cax = []
+    for k, (png, title, sub_, col) in enumerate(panels):
+        a = fig.add_subplot(bot[k])
+        a.imshow(mpimg.imread(FIG / "_renders" / f"{png}.png"), interpolation="lanczos")
+        a.set_axis_off()
+        a.set_title(title, fontsize=6.4, loc="center", pad=2)
+        a.text(0.5, -0.02, sub_, transform=a.transAxes, ha="center", va="top", fontsize=6.2, color=col,
+               fontweight="bold")
+        cax.append(a)
+    fig.canvas.draw()
+    fig.text(axs[0].get_position().x0 - 0.045, cax[0].get_position().y1 + 0.035, "c", fontsize=9,
+             fontweight="bold", va="bottom")
     S.save(fig, FIG, "Fig3")
 
 
@@ -378,7 +427,8 @@ def fig6():
                                   (axs[1], v2, AFTER, "KRAS:dE_int", "valid C$_{18}$N$_{27}$H$_9$ carrier")):
         y = df[df.columns[df.columns.get_loc("oof_pred") - 1]] if "y" not in df else df["y"]
         K.parity(ax, y.values, df.oof_pred.values, col, stats_lines=None, xlabel="GFN2-xTB energy")
-        K.stat_box(ax, [f"$Q^2_{{CV}}$ = {q[key]['Q2_CV']:.2f}", f"$p$ = {q[key]['p_perm']:.3f}"], loc="upper left")
+        K.stat_box(ax, [f"$Q^2_{{CV}}$ = {q[key]['Q2_CV']:.2f}".replace("-", "−"), f"$p$ = {q[key]['p_perm']:.3f}"],
+                   loc="upper left")
         ax.set_title(ttl, fontsize=6.5, loc="left")
     ax = axs[2]
     items = [("KRAS, invalid carrier", q["KRAS_v1_reproduced"], BEFORE),
