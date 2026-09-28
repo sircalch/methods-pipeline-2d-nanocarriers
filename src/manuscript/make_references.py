@@ -32,6 +32,8 @@ DOIS = {
     "naguib2011": "10.1002/adma.201102306", "khazaei2013": "10.1002/adfm.201202502",
     "feng2016": "10.1038/nchem.2491", "mannix2015": "10.1126/science.aad1080",
     "kroke2002": "10.1039/b111062b", "strout2000": "10.1021/jp994129a",
+    "pourmadadi2023": "10.1016/j.jddst.2022.104001", "huang2018_mxene": "10.1039/c7cs00838d",
+    "gholami2023": "10.1016/j.poly.2023.116295", "li2023_borophene": "10.1007/s00894-023-05724-z",
     "merz2023": "10.1038/s41467-023-38537-y", "stamos2002": "10.1074/jbc.M207135200",
 }
 NO_DOI = {
@@ -53,7 +55,7 @@ NO_DOI = {
 
 
 # ACS (CASSI) journal abbreviations where Crossref gives the full or a non-ACS form
-JOURNAL = {"Molecular Informatics": "Mol. Inf.", "Nat Protoc": "Nat. Protoc.",
+JOURNAL = {"J Mol Model": "J. Mol. Model.", "Journal of Drug Delivery Science and Technology": "J. Drug Delivery Sci. Technol.", "Polyhedron": "Polyhedron", "Molecular Informatics": "Mol. Inf.", "Nat Protoc": "Nat. Protoc.",
            "Journal of Chemical Theory and Computation": "J. Chem. Theory Comput.", "J Comput Chem": "J. Comput. Chem.",
            "Nucleic Acids Research": "Nucleic Acids Res.", "The Journal of Chemical Physics": "J. Chem. Phys.",
            "Advanced Materials": "Adv. Mater.", "Adv Funct Materials": "Adv. Funct. Mater.", "Nature Chem": "Nat. Chem.",

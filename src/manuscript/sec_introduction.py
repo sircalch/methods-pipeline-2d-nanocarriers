@@ -9,7 +9,7 @@ def introduction(doc, ev, c):
     k.para(doc,
            "Two-dimensional materials and nanoclusters such as graphitic carbon nitride, MXenes, borophene and "
            "boron nitride cages are frequently proposed as carriers for drugs" +
-           c("kroke2002", "naguib2011", "mannix2015", "feng2016", "strout2000") + ". A computational screen of "
+           c("pourmadadi2023", "huang2018_mxene", "li2023_borophene", "gholami2023") + ". A computational screen of "
            "such a carrier is inexpensive: the drug and the carrier are optimized with a semiempirical method such "
            "as GFN2-xTB," + c("bannwarth2019") + " the drug is docked into its biological target with AutoDock "
            "Vina," + c("trott2010", "eberhardt2021") + " and a quantitative structure–property relationship "
