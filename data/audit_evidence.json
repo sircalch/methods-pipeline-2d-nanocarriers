@@ -107,6 +107,8 @@
     "kras_bp": {
       "n_configs": 42,
       "n_rejected_lower": 19,
+      "n_P_fourcoord": 17,
+      "n_NN_bond": 2,
       "lowest_rejected_below_accepted_kcal": 40.067876782422715
     }
   },

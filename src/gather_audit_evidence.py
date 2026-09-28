@@ -66,6 +66,20 @@ def reconstruction():
     bp = pd.read_csv(REPO["KRAS"] / "results" / "quantum" / "bp_codoping_scan.csv")
     acc = bp[bp.accepted.astype(bool)]
     lower_rej = bp[(~bp.accepted.astype(bool)) & (bp.E_singlet_Eh < acc.E_singlet_Eh.min())]
+    # why each lower-energy configuration was rejected, from its relaxed geometry
+    from itertools import combinations
+    cov = {"H": 0.31, "B": 0.84, "C": 0.76, "N": 0.71, "P": 1.07}
+    n_p4 = n_nn = 0
+    for r in lower_rej.itertuples():
+        L = (REPO["KRAS"] / "calculations" / "carriers_bp_scan" / f"b{r.B_site}_p{r.P_site}" / "xtbopt.xyz").read_text().splitlines()
+        el = [x.split()[0] for x in L[2:2 + int(L[0])]]
+        xyz = np.array([[float(v) for v in x.split()[1:4]] for x in L[2:2 + int(L[0])]])
+        bonds = [(i, j) for i, j in combinations(range(len(el)), 2)
+                 if np.linalg.norm(xyz[i] - xyz[j]) < 1.15 * (cov[el[i]] + cov[el[j]])]
+        if sum(el.index("P") in bd for bd in bonds) > 3:
+            n_p4 += 1
+        elif any(el[i] == el[j] == "N" for i, j in bonds):
+            n_nn += 1
     # what the pre-audit tau study reported on the same free B40H15 flake (its Supporting
     # Information, the file deposited on Zenodo before the audit)
     import re
@@ -79,7 +93,8 @@ def reconstruction():
                         "chem_new": int((new.adsorption_mode == "chemisorption").sum()), "n_new": len(new)},
             "tau_new_dcar_kcal": [float(d_new.min()), float(d_new.max())],
             "tnbc_cage_dcar_kcal": [float(min(d_cage)), float(max(d_cage))],
-            "kras_bp": {"n_configs": len(bp), "n_rejected_lower": len(lower_rej),
+            "kras_bp": {"n_configs": len(bp), "n_rejected_lower": len(lower_rej), "n_P_fourcoord": n_p4,
+                        "n_NN_bond": n_nn,
                         "lowest_rejected_below_accepted_kcal":
                             float((acc.E_singlet_Eh.min() - lower_rej.E_singlet_Eh.min()) * HARTREE)
                             if len(lower_rej) else 0.0}}

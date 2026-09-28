@@ -126,8 +126,9 @@ def results(doc, ev, c):
            "The same test applies to doped carriers. In a scan of boron/phosphorus co-doping sites in "
            f"g-C_{{3}}N_{{4}}, {kb2['n_rejected_lower']} of {kb2['n_configs']} configurations were lower in energy "
            f"than the substitutional one finally used, by up to {f1(kb2['lowest_rejected_below_accepted_kcal'])} "
-           "kcal mol^{−1}, but in none of them were both dopants still three-coordinate and bonded only to "
-           "nitrogen, as substitution requires. Ranking by energy alone would have selected a structure that is no longer the doped "
+           "kcal mol^{−1}, but none of them was the doped material: in " + f"{kb2['n_P_fourcoord']}" + " of them "
+           "phosphorus had become four-coordinate, and in the other " + f"{kb2['n_NN_bond']}" + " the lattice had "
+           "formed an N–N bond. Ranking by energy alone would have selected a structure that is no longer the doped "
            "material; the bond census of the carrier has to accompany the energy.", indent=True)
     k.figure(doc, FIG / "Fig3.png", 3,
              "Carrier reconstruction during adsorption. (a) Energy of the carrier fragment frozen at its geometry "
