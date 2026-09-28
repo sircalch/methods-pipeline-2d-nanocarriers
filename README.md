@@ -3,8 +3,8 @@
 **Auditing Computational Screens of Two-Dimensional Drug Carriers: Eight Failure
 Modes Found by Rebuilding Four Case Studies, and a Checklist to Catch Them**
 
-Version 2 of this repository (target: *Journal of Chemical Information and
-Modeling*). It replaces version 1, a Beilstein Perspective whose conclusions
+Version 2 of this repository (target: *Journal of Computational Biophysics
+and Chemistry*, World Scientific). It replaces version 1, a Beilstein Perspective whose conclusions
 rested on results that the September 2026 rebuild of the four case studies showed
 to be wrong. Version 1 remains available on Zenodo
 ([10.5281/zenodo.22760388](https://doi.org/10.5281/zenodo.22760388)); what changed
@@ -26,6 +26,7 @@ The four case studies, each rebuilt from raw inputs:
 - `data/v1_reproduction/` — reproduction of the version-1 KRAS QSPR model
 - `src/figures/make_figures.py` — Figures 1–6 and the table-of-contents graphic (`figures/`)
 - `src/manuscript/` — manuscript, Supporting Information and cover letter builders
+  (`src/make_jcbc_package.py` assembles and checks the upload package)
   (`build_manuscript.py`, `build_si.py`, `build_cover_letter.py`; references from
   Crossref via `make_references.py`) → `manuscript/submission/`
 

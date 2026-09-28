@@ -10,7 +10,7 @@ def audit_methods(doc, ev, c):
     k.heading(doc, "Methods")
     k.heading(doc, "The four case studies", 2)
     k.para(doc,
-           "Each study paired a disease target with a cohort of drugs and a carrier model (Table 1). Before the "
+           "Each study paired a disease target with a cohort of drugs and a carrier model (Table I). Before the "
            "audit, each existed as a code repository, a data set and a manuscript; the supporting files of all "
            "four, and a methods description built on them, had been deposited on Zenodo" +
            c("zenodo_kras", "zenodo_tnbc", "zenodo_gbm", "zenodo_tau", "zenodo_methods_v1") + ". Those "
@@ -21,12 +21,12 @@ def audit_methods(doc, ev, c):
 
     k.heading(doc, "Checks", 2)
     k.para(doc,
-           "Eight checks were applied, each at the step of the workflow that it protects (Figure 1). They are "
+           "Eight checks were applied, each at the step of the workflow that it protects (Fig. 1). They are "
            "described below in the order of the failure modes they address.", indent=True)
     k.figure(doc, BASE_FIG / "Fig1.png", 1,
              "Workflow of a computational carrier screen and the eight checks of the audit. Each check is "
              "attached to the step it protects, and its number corresponds to the failure mode in the Results "
-             "and to the checklist in Table 2; the red line gives what the check found in the audit "
+             "and to the checklist in Table II; the red line gives what the check found in the audit "
              "of the four studies. Images, from the rebuilt studies: MRTX1133; the B_{36}N_{36} cage; the "
              "Ti_{3}C_{2}O_{2} MXene; MRTX1133 adsorbed on g-C_{3}N_{4} (GFN2-xTB); MRTX1133 docked in KRAS-G12D; "
              "a result table in which every row must point to an input structure and an output file; and "

@@ -1,9 +1,9 @@
 """
-build_manuscript.py - J. Chem. Inf. Model. manuscript (Word) of the audit paper. Every
+build_manuscript.py - J. Comput. Biophys. Chem. manuscript (Word) of the audit paper. Every
 number comes from data/audit_evidence.json, data/carrier_audit.csv or the audit tables.
 
 usage: python src/manuscript/build_manuscript.py
-writes manuscript/submission/Manuscript_Audit_JCIM.docx
+writes manuscript/submission/Manuscript_Audit_JCBC.docx
 """
 import json
 import sys
@@ -15,7 +15,7 @@ import functools
 
 import docx_kit as k  # noqa: E402
 
-k.figure = functools.partial(k.figure, label="Figure", end=".")   # ACS caption style
+k.figure = functools.partial(k.figure, label="Fig.", end=".")      # J. Comput. Biophys. Chem.: "Fig. N."
 from references import REFS  # noqa: E402
 from sec_audit import audit_methods  # noqa: E402
 from sec_discussion import conclusions, discussion  # noqa: E402
@@ -31,6 +31,9 @@ AFFIL = "Universidad Estatal de Sonora, Ley Federal del Trabajo S/N, Col. Apolo,
 EMAIL = "andres.monreal@ues.mx"
 ORCID = "0009-0009-1207-8597"
 REPO = "https://github.com/sircalch/methods-pipeline-2d-nanocarriers"
+RUNNING_TITLE = "Auditing 2D drug-carrier screens"      # <= 45 letters and spaces
+KEYWORDS = ["structure curation", "molecular docking", "tight binding", "nested cross-validation",
+            "reproducibility"]                         # 3-5, none repeating a title word
 TITLE = ("Auditing Computational Screens of Two-Dimensional Drug Carriers: Eight Failure Modes Found by "
          "Rebuilding Four Case Studies, and a Checklist to Catch Them")
 
@@ -65,7 +68,8 @@ def front(doc):
     k.para(doc, f"**{TITLE}**", align="left", size=15, space_after=12)
     k.para(doc, f"{AUTHOR}^{{*}}", align="left", space_after=2)
     k.para(doc, AFFIL, align="left", size=10, space_after=2)
-    k.para(doc, f"^{{*}}E-mail: {EMAIL}. ORCID: {ORCID}", align="left", size=10, space_after=14)
+    k.para(doc, f"^{{*}}E-mail: {EMAIL}. ORCID: {ORCID}", align="left", size=10, space_after=4)
+    k.para(doc, f"Running title: {RUNNING_TITLE}", align="left", size=10, space_after=14)
 
 
 def abstract(doc, ev):
@@ -89,6 +93,7 @@ def abstract(doc, ev):
            "(" + f"{q['KRAS:dE_int']['Q2_CV']:.2f}".replace("-", "−") + "). Each failure mode is caught by a check that costs less than the "
            "calculation it protects. We describe the evidence for each and collect the checks into a list to "
            "apply before any model is fitted.")
+    k.para(doc, "**Keywords:** " + "; ".join(KEYWORDS), align="left")
 
 
 def case_table(doc):
@@ -98,7 +103,7 @@ def case_table(doc):
             ["EGFR (glioblastoma)", "1M17", "Ti_{3}C_{2}O_{2} MXene, periodic slab", "33", "PBE-D3"],
             ["Tau paired helical filaments (Alzheimer's disease)", "8FUG", "β_{12} borophene, supported sheet",
              "28", "GFN2-xTB"]]
-    k.table(doc, (1, "The four case studies after the rebuild."),
+    k.table(doc, ("I", "The four case studies after the rebuild."),
             ["Target (disease)", "PDB", "Carrier model", "Drugs", "Adsorption method"], rows, align="llllc",
             font=8.5, note="Drugs, number in the rebuilt cohort (organic compounds with a structure that could "
                            "be docked and adsorbed). For the MXene, adsorption of the alkylating agents is "
@@ -106,8 +111,8 @@ def case_table(doc):
 
 
 def declarations(doc):
-    k.heading(doc, "Associated Content")
-    k.para(doc, "**Supporting Information.** The Supporting Information is available free of charge: identity of "
+    k.heading(doc, "Supporting Information")
+    k.para(doc, "The Supporting Information contains the identity of "
                 "the 128 drug structures (Table S1), bond census of the carrier models (Table S2), carrier "
                 "energy in each tau complex before and after the rebuild (Table S3), redocking controls of the "
                 "four studies (Table S4) and the QSPR models before and after the rebuild (Table S5) (PDF).")
@@ -115,9 +120,8 @@ def declarations(doc):
     k.para(doc, "The scripts that extract every number and figure of this paper from the four case-study "
                 f"repositories and from the archive of the pre-rebuild files are available at {REPO} under the MIT "
                 "licence, together with the extracted evidence (audit_evidence.json, carrier_audit.csv).")
-    k.heading(doc, "Author Information")
-    k.para(doc, f"Corresponding author: {AUTHOR}, {EMAIL}. ORCID: {ORCID}. Notes: the author declares no "
-                "competing financial interest.")
+    k.heading(doc, "Conflict of Interest")
+    k.para(doc, "The author declares no competing interests.")
     k.heading(doc, "Use of AI Tools")
     k.placeholder(doc, "[AUTHOR TO COMPLETE BEFORE SUBMISSION: statement on the use of AI tools, as required by "
                        "the journal.]")
@@ -149,7 +153,7 @@ def main():
     conclusions(doc, ev, c)
     declarations(doc)
     references(doc, c.list())
-    out = OUT / "Manuscript_Audit_JCIM.docx"
+    out = OUT / "Manuscript_Audit_JCBC.docx"
     doc.save(out)
     print(f"wrote {out}")
 

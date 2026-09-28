@@ -63,7 +63,7 @@ def results(doc, ev, c):
     k.heading(doc, "1. The molecule is not the one named", 2)
     k.para(doc,
            f"Of the {idt['total']['n']} drug structures in the four data sets, {idt['total']['wrong']} encoded a "
-           f"different compound from the one named (Figure 2a, Table S1): none of {idt['KRAS']['n']} in the KRAS study, but "
+           f"different compound from the one named (Fig. 2a, Table S1): none of {idt['KRAS']['n']} in the KRAS study, but "
            f"{idt['TNBC']['wrong']} of {idt['TNBC']['n']} for TNBC, {idt['GBM']['wrong']} of {idt['GBM']['n']} "
            f"for glioblastoma and {idt['Tau']['wrong']} of {idt['Tau']['n']} for tau. Some errors changed the "
            f"molecule beyond recognition: {worst['name'].lower()} in the "
@@ -82,7 +82,7 @@ def results(doc, ev, c):
     tb, gb, kb = ca.loc[("TNBC", "before")], ca.loc[("GBM", "before")], ca.loc[("KRAS", "before")]
     tbc, kbc, gbc = census(tb.bonds), census(kb.forbidden_bonds), census(gb.forbidden_bonds)
     k.para(doc,
-           "Three of the four carrier models were not the materials they were named after (Figure 2b, Table S2). The "
+           "Three of the four carrier models were not the materials they were named after (Fig. 2b, Table S2). The "
            f"B_{{36}}N_{{36}} cage of the TNBC study had the right formula but {tbc['B-B']} B–B and {tbc['N-N']} "
            f"N–N bonds and only {tbc['B-N']} B–N bonds, whereas in a boron nitride cage every bond joins boron to "
            "nitrogen" + c("strout2000") + f". Worse, {int(tb.overlapping_pairs)} of those B–N pairs were atoms "
@@ -108,10 +108,10 @@ def results(doc, ev, c):
            "A carrier can be chemically valid and still not survive the adsorption calculation. The β_{12} "
            "borophene flake of the tau study (B_{40}H_{15}) was a true minimum with no imaginary frequencies, "
            f"but in {t['n_below_min']} of {t['n']} complexes the carrier fragment ended "
-           f"below that minimum, by up to {f1(-t['min_kcal'])} kcal mol^{{−1}} (Figure 3a, Table S3): the free flake "
+           f"below that minimum, by up to {f1(-t['min_kcal'])} kcal mol^{{−1}} (Fig. 3a, Table S3): the free flake "
            "contracted toward a compact boron cluster, and the computed binding energies contained the energy "
            f"of that reconstruction. The classification of the drugs was affected as well: on the free flake "
-           f"{t['chem_old']} of {t['n']} drugs appeared to chemisorb (Figure 3b), and the version of the study "
+           f"{t['chem_old']} of {t['n']} drugs appeared to chemisorb (Fig. 3b), and the version of the study "
            "deposited before the audit" + c("zenodo_tau") + f" had reported {rc['tau_v1_reported']['chem']} of "
            f"{rc['tau_v1_reported']['n']} ligands as chemisorbed on the same flake. Borophene exists only on a "
            "supporting metal" + c("feng2016", "mannix2015") +
@@ -146,8 +146,8 @@ def results(doc, ev, c):
            f"material (3.03 Å" + c("khazaei2013") + f"), with a jump of {f1(me['gfn2_max_jump_eV'])} eV per "
            f"formula unit between neighbouring points; GFN1-xTB failed to converge at {me['gfn1_failed']} of "
            f"{me['gfn1_n']} lattice constants and gave unphysical energies at {me['gfn1_unphysical']} more "
-           f"(Figure 4a). Finite flakes fared no better: {me['flake_neutral_converged']} of "
-           f"{me['flake_neutral_attempts']} calculations on neutral flakes converged (Figure 4b). Both methods "
+           f"(Fig. 4a). Finite flakes fared no better: {me['flake_neutral_converged']} of "
+           f"{me['flake_neutral_attempts']} calculations on neutral flakes converged (Fig. 4b). Both methods "
            "were parametrized mainly on molecular data" + c("grimme2017", "bannwarth2019") + ", and a metallic "
            "transition-metal carbide lies outside that domain. A lattice scan of the bare carrier, which costs "
            "minutes, is enough to see it; the glioblastoma study was therefore moved to periodic density "
@@ -168,7 +168,7 @@ def results(doc, ev, c):
     k.para(doc,
            "Two of the four docking protocols reproduced the experimental ligand pose from both its crystal "
            f"conformation and from SMILES: KRAS-G12D ({f2(ctl['KRAS'][0])} and {f2(ctl['KRAS'][1])} Å) and PARP1 "
-           f"({f2(ctl['TNBC'][0])} and {f2(ctl['TNBC'][1])} Å) (Figure 5a, Table S4). The other two did not, and each "
+           f"({f2(ctl['TNBC'][0])} and {f2(ctl['TNBC'][1])} Å) (Fig. 5a, Table S4). The other two did not, and each "
            "failure carried information. The tau study had first docked into a fibril structure without any "
            "ligand, with a box centred on previously docked poses, so that the protocol could not fail; in a "
            "cryo-EM structure with a bound tracer" + c("merz2023") + ", the tracer is not reproduced in the "
@@ -178,7 +178,7 @@ def results(doc, ev, c):
            f"({f1(old[0])} and {f1(old[1])} Å). With the non-covalent erlotinib complex" + c("stamos2002") +
            f", the top-ranked pose still failed ({f1(ctl['GBM'][0])} and {f1(ctl['GBM'][1])} Å), yet the "
            f"crystal-like pose was present as mode {int(bx['mode'])} ({f2(bx.rmsd_A)} Å), and all nine modes lay "
-           f"within {f2(span)} kcal mol^{{−1}} (Figure 5b): the search found the pose, and the score could not "
+           f"within {f2(span)} kcal mol^{{−1}} (Fig. 5b): the search found the pose, and the score could not "
            "rank it. Inspecting every mode, not only the first, distinguishes these cases" +
            c("warren2006", "bender2021") + ".", indent=True)
     k.figure(doc, FIG / "Fig5.png", 5,
@@ -219,14 +219,14 @@ def results(doc, ev, c):
            "statistics. With the same code, the same four descriptors and the same "
            f"{v1['n']} drugs, nested cross-validation gives *Q*^{{2}}_{{CV}} = {f2(v1['Q2_CV'])} with a "
            f"Y-randomization *p* of {v1['p_perm']:.3f} on adsorption energies computed on the invalid carrier, "
-           f"and {f2(v2['Q2_CV'])} (*p* = {v2['p_perm']:.2f}) on energies computed on the valid one (Figure 6a, "
+           f"and {f2(v2['Q2_CV'])} (*p* = {v2['p_perm']:.2f}) on energies computed on the valid one (Fig. 6a, "
            "b). The first model is leak-free and significant, and it describes a material that does not exist. "
            "Across the rebuilt studies, no descriptor model predicts its target usefully: the TNBC models give *Q*^{2}_{CV} = "
            f"{f2(q['TNBC:delta_Eint_SP_kcal_mol']['Q2_CV'])} for the interaction energy and "
            f"{f2(q['TNBC:vina_4UND_kcal_mol']['Q2_CV'])} for the docking score, and the only positive values, "
            f"{f2(q['Tau:dE_int']['Q2_CV'])} for tau and {f2(q['GBM:vina']['Q2_CV'])} for the glioblastoma docking "
            "score, are carried by the formal charge of four cationic dyes and by molecular size, respectively "
-           "(Figure 6c, Table S5). These negative results are the honest outcome of the screens.", indent=True)
+           "(Fig. 6c, Table S5). These negative results are the honest outcome of the screens.", indent=True)
     k.figure(doc, FIG / "Fig6.png", 6,
              "The same QSPR protocol on data from an invalid and from a valid carrier. (a, b) Out-of-fold "
              "predictions of nested 5×5 cross-validation for the KRAS drugs, with adsorption energies computed "

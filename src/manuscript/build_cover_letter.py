@@ -1,4 +1,4 @@
-"""build_cover_letter.py - cover letter for J. Chem. Inf. Model. (Word). Numbers
+"""build_cover_letter.py - cover letter for J. Comput. Biophys. Chem. (Word). Numbers
 from data/audit_evidence.json."""
 import json
 import sys
@@ -19,11 +19,11 @@ def main():
     idt, rc, q = ev["identity"], ev["reconstruction"]["tau_old"], ev["qspr"]
     doc = k.new_document()
     for t in (AUTHOR, AFFIL, EMAIL, "", date.today().strftime("%d %B %Y"), "",
-              "The Editor", "Journal of Chemical Information and Modeling", ""):
+              "The Editor-in-Chief", "Journal of Computational Biophysics and Chemistry", ""):
         k.para(doc, t, align="left", space_after=0)
     k.para(doc, "Dear Editor,", align="left")
-    k.para(doc, f"I submit the manuscript \"{TITLE}\" for consideration as an Article in the Journal of "
-                "Chemical Information and Modeling.")
+    k.para(doc, f"I submit the manuscript \"{TITLE}\" for consideration as a Research article in the Journal of "
+                "Computational Biophysics and Chemistry.")
     k.para(doc,
            "Screens of two-dimensional materials as drug carriers are usually judged by the statistics of the "
            "models fitted at their end. The manuscript reports what I found when I rebuilt four of my own "
@@ -47,7 +47,7 @@ def main():
     k.para(doc, "Sincerely,", align="left", space_after=0)
     k.para(doc, f"{AUTHOR} (ORCID {ORCID})", align="left")
     OUT.mkdir(parents=True, exist_ok=True)
-    out = OUT / "Cover_Letter_JCIM.docx"
+    out = OUT / "Cover_Letter_JCBC.docx"
     doc.save(out)
     print(f"wrote {out}")
 

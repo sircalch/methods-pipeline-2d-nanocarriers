@@ -4,7 +4,7 @@ audit paper. Every row comes from data/ (written by src/gather_audit_evidence.py
 and src/audit_carriers.py).
 
 usage: python src/manuscript/build_si.py
-writes manuscript/submission/Supporting_Information_Audit_JCIM.docx
+writes manuscript/submission/Supporting_Information_Audit_JCBC.docx
 """
 import json
 import sys
@@ -105,7 +105,7 @@ def main():
             ["Study", "Target", "*n*", "*Q*^{2}_{CV}", "*p*"], rows, align="llccc", font=8)
 
     OUT.mkdir(parents=True, exist_ok=True)
-    out = OUT / "Supporting_Information_Audit_JCIM.docx"
+    out = OUT / "Supporting_Information_Audit_JCBC.docx"
     doc.save(out)
     print(f"wrote {out}")
 

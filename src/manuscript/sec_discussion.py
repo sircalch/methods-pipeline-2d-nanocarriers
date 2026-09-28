@@ -1,4 +1,4 @@
-"""sec_discussion.py - discussion, the checklist (Table 2), limitations and conclusions."""
+"""sec_discussion.py - discussion, the checklist (Table II), limitations and conclusions."""
 import docx_kit as k
 
 CHECKLIST = [
@@ -34,7 +34,7 @@ def discussion(doc, ev, c):
            "cross-validated and Y-randomized. In the four studies examined here, every failure mode was found "
            "by a check that is cheaper than the calculation it protects.", indent=True)
     k.para(doc,
-           "The checks are collected in Table 2, in the order in which they can be applied. Most take seconds "
+           "The checks are collected in Table II, in the order in which they can be applied. Most take seconds "
            "or minutes: a database query, a bond census, a comparison of two energies, a distance. The most "
            "expensive, the redocking controls and the method test on the bare carrier, take hours, which is "
            "still less than the screen itself. Two points deserve emphasis. First, the stability check needs no "
@@ -43,7 +43,7 @@ def discussion(doc, ev, c):
            "the docking control should be read mode by mode: a protocol that finds the experimental pose but "
            "ranks it sixth has a scoring problem, not a search problem, and its scores should be reported as "
            "an exploratory ranking.", indent=True)
-    k.table(doc, (2, "Checklist for computational screens of drug carriers. Each item corresponds to one "
+    k.table(doc, ("II", "Checklist for computational screens of drug carriers. Each item corresponds to one "
                      "failure mode in the Results."),
             ["Check", "What to do", "Failure mode"], [[a, b, n] for a, b, n in CHECKLIST], align="llc", font=8.5)
     k.para(doc,

@@ -38,7 +38,8 @@ NO_DOI = {
     "oecd2007": "OECD. Guidance Document on the Validation of (Quantitative) Structure-Activity Relationship "
                 "[(Q)SAR] Models; OECD Series on Testing and Assessment, No. 69; OECD Publishing: Paris, 2007.",
     "pedregosa2011": "Pedregosa, F.; Varoquaux, G.; Gramfort, A.; Michel, V.; Thirion, B.; Grisel, O.; Blondel, M.; "
-                     "Prettenhofer, P.; Weiss, R.; Dubourg, V.; et al. Scikit-learn: Machine Learning in Python. "
+                     "Prettenhofer, P.; Weiss, R.; Dubourg, V.; Vanderplas, J.; Passos, A.; Cournapeau, D.; Brucher, M.; "
+                     "Perrot, M.; Duchesnay, E. Scikit-learn: Machine Learning in Python. "
                      "J. Mach. Learn. Res. 2011, 12, 2825–2830.",
     'zenodo_kras': 'Monreal Hernández, A. Atomistic Modeling and QSPR-Guided Screening of 2D Graphitic Carbon Nitride Nanocarriers for KRAS-G12D Inhibitor Loading and Target Engagement, version 2.0.0. Zenodo, 2026. https://doi.org/10.5281/zenodo.22700431',
     'zenodo_tnbc': 'Monreal Hernández, A. Explainable AI and Quantum-Guided QSAR/QSPR Modeling of Triple-Negative Breast Cancer Therapeutics Loading on 2D Nanomaterials, version 2.0.0. Zenodo, 2026. https://doi.org/10.5281/zenodo.22700597',
@@ -58,7 +59,8 @@ JOURNAL = {"Molecular Informatics": "Mol. Inf.", "Nat Protoc": "Nat. Protoc.",
            "Advanced Materials": "Adv. Mater.", "Adv Funct Materials": "Adv. Funct. Mater.", "Nature Chem": "Nat. Chem.",
            "Nat Commun": "Nat. Commun.", "Journal of Biological Chemistry": "J. Biol. Chem."}
 # titles that Crossref stores with an appended footnote or split formulas
-TITLE = {"kroke2002": "Tri-s-triazine derivatives. Part I. From trichloro-tri-s-triazine to graphitic C3N4 structures",
+TITLE = {"giannozzi2017": "Advanced capabilities for materials modelling with Quantum ESPRESSO",
+         "kroke2002": "Tri-s-triazine derivatives. Part I. From trichloro-tri-s-triazine to graphitic C3N4 structures",
          "strout2000": "Structure and Stability of Boron Nitrides: Isomers of B12N12",
          "naguib2011": "Two-Dimensional Nanocrystals Produced by Exfoliation of Ti3AlC2"}
 
@@ -74,8 +76,7 @@ def initials(given):
 def acs(m, key=None):
     au = [f"{a.get('family', '')}, {initials(a.get('given', ''))}".strip(", ") for a in m.get("author", [])
           if a.get("family")]
-    if len(au) > 10:
-        au = au[:10] + ["et al."]
+    # J. Comput. Biophys. Chem.: full author lists, never 'et al.'
     auth = "; ".join(au[:-1]) + ("; " if len(au) > 1 else "") + au[-1] if au else ""
     auth = auth.replace("; et al.", "; et al.")
     title = TITLE.get(key) or re.sub(r"\s+", " ", re.sub(r"<[^>]+>", "", m["title"][0])).strip().rstrip(".")
