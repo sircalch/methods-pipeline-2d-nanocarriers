@@ -143,8 +143,8 @@ def results(doc, ev, c):
     k.para(doc,
            "For the MXene, the problem was the method rather than the model. GFN2-xTB places the energy minimum "
            f"of periodic Ti_{{3}}C_{{2}}O_{{2}} at a = {f2(me['gfn2_min_a'])} Å, "
-           f"{100 * (me['a_ref'] - me['gfn2_min_a']) / me['a_ref']:.0f}% below the lattice constant of the "
-           f"material (3.03 Å" + c("khazaei2013") + f"), with a jump of {f1(me['gfn2_max_jump_eV'])} eV per "
+           f"{100 * (me['a_ref'] - me['gfn2_min_a']) / me['a_ref']:.0f}% below the PBE-D3 lattice constant of the "
+           f"material ({f2(me['a_ref'])} Å, computed here for the primitive cell with the settings of the case study), with a jump of {f1(me['gfn2_max_jump_eV'])} eV per "
            f"formula unit between neighbouring points; GFN1-xTB failed to converge at {me['gfn1_failed']} of "
            f"{me['gfn1_n']} lattice constants and gave unphysical energies at {me['gfn1_unphysical']} more "
            f"(Fig. 4a). Finite flakes fared no better: {me['flake_neutral_converged']} of "
@@ -156,7 +156,7 @@ def results(doc, ev, c):
     k.figure(doc, FIG / "Fig4.png", 4,
              "Tight-binding methods applied to Ti_{3}C_{2}O_{2}. (a) Energy of a periodic 4×4 slab against the "
              "in-plane lattice constant with GFN2-xTB and GFN1-xTB; crosses, failed or unphysical SCF; dotted "
-             "line, experimental and DFT lattice constant. (b) Calculations on finite flakes attempted and "
+             "line, PBE-D3 lattice constant computed for the primitive cell. (b) Calculations on finite flakes attempted and "
              "converged, for neutral and charged flakes")
 
     # 5 docking

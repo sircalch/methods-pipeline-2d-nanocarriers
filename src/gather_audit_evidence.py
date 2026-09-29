@@ -107,7 +107,8 @@ def method():
     g1 = sc[sc.method == "GFN1-xTB"]
     ft = pd.read_csv(g / "results" / "quantum" / "mxene_flake_scf_tests.csv")
     neutral = ft[(ft.charge == 0) & ~ft.structure.str.contains("discarded")]
-    return {"gfn2_min_a": float(g2.loc[g2.E_eV_per_fu.idxmin(), "a_A"]), "a_ref": 3.03,
+    pbe = json.loads((g / "results" / "quantum" / "ti3c2o2_primitive_pbe_d3.json").read_text())
+    return {"gfn2_min_a": float(g2.loc[g2.E_eV_per_fu.idxmin(), "a_A"]), "a_ref": pbe["a_A"],
             "gfn2_max_jump_eV": float(np.abs(np.diff(g2.E_eV_per_fu)).max()),
             "gfn1_failed": int(g1.E_eV_per_fu.isna().sum()), "gfn1_n": len(g1),
             "gfn1_unphysical": int((g1.E_eV_per_fu < -600).sum()),

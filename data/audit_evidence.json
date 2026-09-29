@@ -114,7 +114,7 @@
   },
   "method": {
     "gfn2_min_a": 2.7,
-    "a_ref": 3.03,
+    "a_ref": 3.022,
     "gfn2_max_jump_eV": 30.98590014835247,
     "gfn1_failed": 6,
     "gfn1_n": 14,

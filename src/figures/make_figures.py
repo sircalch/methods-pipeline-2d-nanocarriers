@@ -332,8 +332,9 @@ def fig4():
         ax.plot(x.a_A[ok], e - e.min(), marker=mk, ms=3.5, lw=1, color=col, label=meth)
         bad = x[~ok]
         ax.scatter(bad.a_A, np.full(len(bad), -2.2), marker="x", color=col, s=16, lw=0.8)
-    ax.axvline(3.03, color=S.INK, lw=0.8, ls=(0, (1, 2)))
-    ax.text(3.035, 33, "experiment/DFT\na = 3.03 Å", fontsize=6, va="top")
+    a_pbe = json.loads((g / "results" / "quantum" / "ti3c2o2_primitive_pbe_d3.json").read_text())["a_A"]
+    ax.axvline(a_pbe, color=S.INK, lw=0.8, ls=(0, (1, 2)))
+    ax.text(a_pbe + 0.005, 33, f"PBE-D3\na = {a_pbe:.2f} Å", fontsize=7, va="top")
     ax.set_xlabel("In-plane lattice constant of Ti$_3$C$_2$O$_2$ (Å)")
     ax.set_ylabel("E − E$_{min}$ (eV per formula unit)")
     from matplotlib.lines import Line2D
@@ -462,7 +463,7 @@ def toc():
     items = [(f"{idt['total']['wrong']}/{idt['total']['n']}", "drug structures were\nanother compound"),
              (f"{nbad}/4", "carrier models had\nimpossible bonds"),
              (f"{rc['chem_old']}→{rc['chem_new']}", "'chemisorbers' once the\ncarrier stopped collapsing"),
-             (f"{me['gfn2_min_a']:.2f} Å", "xTB lattice of the MXene\n(reference 3.03 Å)")]
+             (f"{me['gfn2_min_a']:.2f} Å", f"xTB lattice of the MXene\n(PBE-D3: {me['a_ref']:.2f} Å)")]
     for i, (big, small) in enumerate(items):
         y = 0.75 - i * 0.19
         fig.text(0.03, y, big, fontsize=8.5, weight="bold", color=S.CHEM, va="top")
