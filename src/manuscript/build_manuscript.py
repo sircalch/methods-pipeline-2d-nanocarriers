@@ -123,8 +123,12 @@ def declarations(doc):
     k.heading(doc, "Conflict of Interest")
     k.para(doc, "The author declares no competing interests.")
     k.heading(doc, "Use of AI Tools")
-    k.placeholder(doc, "[AUTHOR TO COMPLETE BEFORE SUBMISSION: statement on the use of AI tools, as required by "
-                       "the journal.]")
+    ai_statement = BASE / "manuscript" / "ai_statement.txt"   # written or approved by the author
+    if ai_statement.exists():
+        k.para(doc, ai_statement.read_text(encoding="utf-8").strip())
+    else:
+        k.placeholder(doc, "[AUTHOR TO COMPLETE BEFORE SUBMISSION: statement on the use of AI tools, as required by "
+                           "the journal.]")
 
 
 def references(doc, refs):

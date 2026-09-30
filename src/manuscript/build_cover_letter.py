@@ -39,8 +39,9 @@ def main():
            "list to apply before any model is fitted.")
     k.para(doc,
            "Earlier versions of the four case studies and a methods description based on them were deposited "
-           "on Zenodo before the audit; the manuscript states what changed. The rebuilt case studies are being "
-           "prepared for submission to the Journal of Molecular Modeling as separate papers; this manuscript "
+           "on Zenodo before the audit; the manuscript states what changed. The rebuilt case studies are "
+           "separate papers: two are being submitted at the same time as this manuscript (to the Journal of "
+           "Molecular Modeling and to Structural Chemistry), and the other two will follow; this manuscript "
            "does not report their results beyond what is needed to document the failure modes. The scripts "
            "that extract every number and figure are openly available. The manuscript has not been published "
            "and is not under consideration elsewhere. The author declares no competing interests.")
