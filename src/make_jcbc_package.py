@@ -90,8 +90,8 @@ def main():
         ("References: full author lists (no 'et al.')", not any("et al" in r for r in refs), f"{len(refs)} references"),
         ("Figures 600 dpi, ≤ 7 in wide", all(d >= 600 for _, d, _ in info) and all(w <= 178 for w in widths.values()),
          ", ".join(f"{n} {w:.0f} mm" for n, w in widths.items())),
-        ("No leftover placeholders except the AI statement",
-         sum("[AUTHOR TO COMPLETE" in p or "PENDING" in p for p in ps) == 1,
+        ("No leftover placeholders (the AI statement is the only one allowed)",
+         sum("[AUTHOR TO COMPLETE" in p or "PENDING" in p for p in ps) <= 1,
          f"{sum('[AUTHOR TO COMPLETE' in p or 'PENDING' in p for p in ps)} placeholder(s)"),
     ]
     lines = ["# J. Comput. Biophys. Chem. submission package", "",
@@ -99,7 +99,8 @@ def main():
              "## Automatic checks", "", "| Check | Result | Detail |", "|---|---|---|"]
     lines += [f"| {a} | {'OK' if b else '**FAIL**'} | {c} |" for a, b, c in checks]
     lines += ["", "## Author to do before submission", "",
-              "- Write the statement on the use of AI tools (yellow placeholder in the manuscript).",
+             ] + (["- Write the statement on the use of AI tools (yellow placeholder in the manuscript)."]
+                  if any("[AUTHOR TO COMPLETE" in p for p in ps) else []) + [
               "- Reread the manuscript, the Supporting Information and the cover letter.",
               "- Optional (recommended by the journal): free Paperpal pre-submission check.",
               "- Editorial Manager: article type Research article; enter the running title and keywords.",
